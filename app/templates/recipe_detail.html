@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% set title = 'Recipes' %}
+{% set active_page = 'recipes' %}
+
+{% block content %}
+<h1>Fish curry</h1>
+
+<div class="ui fluid horizontal card">
+  <a class="ui image" href="{{ url_for('recipe_detail', id=1, title='fish-curry') }}">
+    <img src="/static/food/example-1.jpg">
+  </a>
+  <div class="content">
+    <a class="header" href="{{ url_for('recipe_detail', id=1, title='fish-curry') }}">Fish curry</a>
+      <a href="" class="ui tag label right floated">Indian</a>
+    <div class="meta">
+      <a><i class="stopwatch icon"></i> 20min</a>
+      <a><i class="utensils icon"></i> serves 4</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'layout.html' %}
+{% set active_page = 'home' %}
+
+{% block content %}
+<h1><i class="lightbulb icon"></i>Today's inspiration</h1>
+<div class="ui grid">
+  {% for i in range(4) %}
+    {% set id    = [1,2,3] | random %}
+    {% set title = ['Fish curry', 'Pasta something', 'Naan delicious'] | random %}
+    {% set duration = [15,20,25,30,45,60] | random %}
+    {% set tag   = ['Italian', 'Indian', 'Moroccan'] | random %}
+    <div class="four wide column">
+      <div class="ui card">
+        <a class="image" href="{{ url_for('recipe_detail', id=id, title='slug-here') }}">
+          <img src="/static/food/example-{{ id }}.jpg">
+        </a>
+        <div class="content">
+          <a class="header" href="{{ url_for('recipe_detail', id=id, title='slug-here') }}" style="margin-top: 1rem;">{{ title }}</a>
+        </div>
+        <div class="extra content meta">
+          <a href="{{ url_for('recipes', duration=duration ) }}"><i class="stopwatch icon"></i> {{ duration }}min</a>
+          <a href="{{ url_for('recipes', tag=tag.lower() ) }}" class="ui tag label right floated">{{ tag }}</a>
+        </div>
+      </div>
+    </div>
+
+  {% endfor %}
+</div>
+
+<div class="ui divider"></div>
+
+<h1><i class="calendar icon"></i>Meal planning</h1>
+<table class="ui selectable very basic table">
+    <tr>
+      <td class="center aligned one wide">
+        <a href=""><img class="ui mini avatar image" src="/static/food/example-1.jpg"></a>
+      </td>
+      <td>
+        <strong>Moday March 23</strong><br>
+        <i class="file alternate icon"></i>Fusili green pesto
+      </td>
+      <td class="one wide"><i class="stopwatch icon"></i>20min</td>
+    </tr>
+    <tr>
+      <td class="center aligned">
+        <img class="ui mini avatar image" src="/static/food/example-2.jpg">
+      </td>
+      <td>
+        <strong>Tuesday March 24</strong><br>
+        <i class="file alternate icon"></i>Lemon risotto<br>
+      </td>
+      <td><i class="stopwatch icon"></i>45min</td>
+    </tr>
+    <tr>
+      <td class="center aligned">
+        <img class="ui mini avatar image" src="">
+      </td>
+      <td>
+        <strong>Wednesday March 25</strong><br>
+        Chicken biryani (left over)
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <td class="center aligned">
+        <img class="ui mini avatar image" src="/static/food/example-3.jpg">
+      </td>
+      <td>
+        <strong>Thursday March 26</strong><br>
+        <i class="file alternate icon"></i>Gnocchi with radicchio and taleggio
+      </td>
+      <td>
+        <i class="stopwatch icon"></i>30min<br>
+        <i class="users icon"></i>serves 4
+      </td>
+    </tr>
+    <tr>
+      <td class="center aligned">
+        <img class="ui mini avatar image" src="">
+      </td>
+      <td class="notes" data-title="Notities" data-content="Rosti rondjes uit de vriezer, schenkel proberen of deze goed is anders BBQ worstjes, groente uit diepvries">
+        <strong>Friday March 27</strong><br>
+        <i class="sticky note icon"></i>Rösti with lamb and red cabbage
+      </td>
+      <td><i class="stopwatch icon"></i>25min</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <strong>Saturday March 28</strong>
+        <div class="ui right floated icon input small" style="width:80%;margin-left:1rem;">
+          <input type="text" placeholder="Quick search for a recipe...">
+          <i class="search icon"></i>
+        </div>
+      </td>
+      <td>
+        <a class="ui labeled icon button" href="{{ url_for('recipes', schedule='24-3-2020') }}">
+          <i class="binoculars icon"></i>
+          Search
+        </a>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button class="ui labeled icon button">
+          <i class="plus icon"></i>
+          Add day
+        </button>
+        <button class="ui labeled icon button">
+          <i class="calendar plus outline icon"></i>
+          Add week
+        </button>
+        <a class="ui labeled icon button" href="{{ url_for('scheduler') }}">
+          <i class="calendar alternate outline icon"></i>
+          Scheduler
+        </a>
+      </td>
+      <td></td>
+    </tr>
+</table>
+
+<script>
+$(document).ready(function(){
+    $('.notes').popup();
+});
+</script>
+{% endblock %}

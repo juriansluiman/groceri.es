@@ -1,0 +1,156 @@
+{% extends 'layout.html' %}
+{% set active_page = 'settings' %}
+
+{% block content %}
+<h1>Settings</h1>
+
+<div class="ui divided grid">
+  <div class="row">
+    <div class="eight wide column ui">
+        <h2>Your profile</h2>
+        <form class="ui form">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="First Name" value="Jurian">
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input type="text" name="email" placeholder="Email address" value="jurian@slui.mn">
+          </div>
+          <div class="field">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Password" value="*************">
+          </div>
+          <button class="ui button" type="submit">Save profile</button>
+        </form>
+    </div>
+
+    <div class="eight wide column ui">
+        <h2>Your data</h2>
+        
+        <div class="ui three column grid">
+          <div class="row">
+            <div class="centered column">
+              <a class="ui huge statistic" href="{{ url_for('recipes') }}">
+                <div class="value">
+                  250
+                </div>
+                <div class="label">
+                  Recipes
+                </div>
+              </a>
+            </div>
+          </div>
+
+            <div class="column">
+              <a class="ui statistic" href="{{ url_for('ingredients') }}">
+                <div class="value">
+                  1,200
+                </div>
+                <div class="label">
+                  Ingredients
+                </div>
+              </a>
+            </div>
+
+            <div class="column">
+              <a class="ui statistic" href="{{ url_for('tags') }}">
+                <div class="value">
+                  22
+                </div>
+                <div class="label">
+                  Tags
+                </div>
+              </a>
+            </div>
+
+            <div class="column">
+              <a class="ui statistic" href="">
+                <div class="value">
+                  2
+                </div>
+                <div class="label">
+                  Users
+                </div>
+              </a>
+            </div>
+        </div>
+
+    </div>
+  </div>
+
+  <div class="row" style="margin-top: 2rem;">
+    <div class="eight wide column ui">
+        <h2>Application settings</h2>
+        
+        <form class="ui form">
+          <div class="field">
+            <label>Grocery day</label>
+            <select class="ui fluid dropdown">
+                <option value="sat" selected="selected">Saturday</option>
+                <option value="sun">Sunday</option>
+                <option value="mon">Monday</option>
+                <option value="tue">Tuesday</option>
+                <option value="wed">Wednesday</option>
+                <option value="thu">Thursday</option>
+                <option value="fri">Friday</option>
+              </select>
+          </div>
+
+          <div class="field">
+            <label>Default servings</label>
+            <div class="ui labeled ticked slider"></div>
+          </div>
+
+          <div class="field">
+            <label>Default course listing</label>
+            <select multiple="" class="ui dropdown courses">
+              <option value="">Select course</option>
+              <option value="amuse">Amuse</option>
+              <option value="starter">Starter</option>
+              <option value="main" selected>Main</option>
+              <option value="side-dish">Side dish</option>
+              <option value="desert">Desert</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Default duration listing</label>
+            <select multiple="" class="ui dropdown">
+              <option value="">Select duration</option>
+              <option value="0-15" selected>0-15 minutes</option>
+              <option value="15-30" selected>15-30 minutes</option>
+              <option value="30-60" selected>30-60 minutes</option>
+              <option value="60-120">60-120 minutes</option>
+              <option value="120+">120+ minutes</option>
+            </select>
+          </div>
+          
+          <button class="ui button" type="submit">Save settings</button>
+        </form>
+
+    </div>
+
+    <div class="eight wide column ui">
+        <h2>About groceri.es</h2>
+        
+        <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
+          <i class="centered hugo leaf icon" style="line-height: 1; font-size: 5rem;"></i>
+        </div>
+        
+        <p>groceri.es is a self-hosted webapplication to help catalogue your recipes, schedule your meals during the week and create shopping lists for groceries based on your meal planning.</p>
+
+        <p>The goal of groceri.es is to ease your meal planning based on known recipes and to auto generate your groceries shopping list. The application is an opinionated design based on how I used to schedule meals with Google Keep and delicious.magazine.</p>
+
+        <p>groceri.es runs in a  a docker container you can host by yourself. The code is open source and using Flask and Fomantic UI.</p>        
+    </div>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('.dropdown').dropdown();
+    $('.slider').slider({min:1, max:10, start: 2});
+});
+</script>
+{% endblock %}

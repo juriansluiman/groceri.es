@@ -1,0 +1,51 @@
+{% set navigation_bar = [
+    ('/recipes', 'recipes', 'Recipes'),
+    ('/groceries', 'groceries', 'Groceries'),
+    ('/pantry', 'pantry', 'Pantry'),
+    ('/settings', 'settings', 'Settings')
+] %}
+{% set active_page = active_page|default('home') %}
+
+<!doctype html>
+<html>
+<head>
+  <title>{% if title %}{{ title }} - {% endif %}groceri.es</title>
+  <link rel="shortcut icon" href="/static/favicon.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/semantic.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/semantic.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/components/accordion.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <style>
+    .flexbox {
+      display: flex;
+    }
+    .sidebar {
+      flex: 0 0 auto;
+      width: 260px;
+    }
+  </style>
+</head>
+<body class="flexbox">
+  <div class="sidebar"><nav class="ui left vertical inverted visible sidebar menu">
+    <a href="/" class="item ui logo icon image{% if active_page == 'home' %} active{% endif %}">
+      <!-- <img src="/static/logos/logo_transparent_notext.png" style="max-width: 3rem; height: auto; margin-right: 1rem;"> -->
+      <i class="leaf icon"></i><b>groceri.es</b>
+    </a>
+    {% for href, id, caption in navigation_bar %}
+      <a href="{{ href }}" class="{% if id == active_page %}active{% endif %} item"><b>{{ caption }}</b></a>
+      {% endfor %}
+  </nav></div>
+  <main class="ui container" style="padding-top: 1rem;">
+    {% block content %}{% endblock %}
+    <div class="ui divider"></div>
+    <footer style="margin-bottom: 1rem;">
+      <p><i class="leaf icon"></i>groceri.es version 0.1. This software is licensed under the MIT. Made out of curiosity by <a href="https://jurian.slui.mn">Jurian Sluiman</a>. View the source code at <a href="https://github.com/juriansluiman/groceri.es"><i class="github icon"></i>GitHub</a>.</p>
+    </footer>
+  </main>
+
+</body>
+</html>

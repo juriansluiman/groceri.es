@@ -1,0 +1,112 @@
+{% extends 'layout.html' %}
+{% set title = 'Recipes' %}
+{% set active_page = 'recipes' %}
+
+{% block content %}
+<h1>Your recipes</h1>
+
+<div class="ui stackable grid">
+	<div class="sixteen wide column">
+	  <div class="ui styled fluid accordion">
+	  	<div class="title"><i class="filter icon"></i>Filter your recipes</div>
+		<form class="ui equal width form content">
+			<div class="field">
+			    <label>Query</label>
+			    <div class="ui icon input">
+			    	<input type="text" placeholder="Search for recipe or ingredient"><i class="search link icon"></i>
+			    </div>
+			</div>
+
+		  	<div class="field">
+			    <label>Course</label>
+			    <select multiple="" class="ui dropdown courses">
+			      <option value="">Select course</option>
+			      <option value="amuse">Amuse</option>
+			      <option value="starter">Starter</option>
+			      <option selected value="main">Main</option>
+			      <option value="side-dish">Side dish</option>
+			      <option value="desert">Desert</option>
+			    </select>
+  			</div>
+
+  			<div class="field">
+			    <label>Tag</label>
+			    <select multiple="" class="ui search dropdown">
+			      <option value="">Select tag</option>
+			      <option value="italian">Italian</option>
+			      <option value="vegetarian">Vegetarian</option>
+			      <option value="moroccan">Moroccan</option>
+			      <option value="vegan">Vegan</option>
+			      <option value="simple">Simple</option>
+			    </select>
+  			</div>
+
+  			<div class="field">
+			    <label>Duration</label>
+			    <select multiple="" class="ui dropdown">
+			      <option value="">Select duration</option>
+			      <option value="0-15">0-15 minutes</option>
+			      <option value="15-30">15-30 minutes</option>
+			      <option value="30-60">30-60 minutes</option>
+			      <option value="60-120">60-120 minutes</option>
+			      <option value="120+">120+ minutes</option>
+			    </select>
+  			</div>
+
+  			<!-- <div class="field">
+			    <label>Day</label>
+			    <div class="ui calendar">
+			      <div class="ui input left icon">
+			        <i class="calendar icon"></i>
+			        <input type="text" placeholder="Pick up a date" name="date">
+			      </div>
+			    </div>
+		    </div> -->
+
+  			<button class="ui button">Filter recipes</button>
+		</form>
+	  </div>
+	</div>
+
+  {% for i in range(24) %}
+    {% set id    = [1,2,3] | random %}
+    {% set title = ['Fish curry', 'Pasta something', 'Naan delicious'] | random %}
+    {% set preptime = [0,5,10,15,20,25,30,35,40,45,50,60] | random %}
+    {% set cooktime = [15,20,25,30,45,60] | random %}
+    {% set tag   = ['Italian', 'Indian', 'Moroccan'] | random %}
+    <div class="four wide column">
+      <div class="ui card">
+        <a class="image" href="{{ url_for('recipe_detail', id=id, title='slug-here') }}">
+          <img src="/static/food/example-{{ id }}.jpg">
+        </a>
+        <div class="content">
+          <a class="header" href="{{ url_for('recipe_detail', id=id, title='slug-here') }}" style="margin-top: 1rem;">{{ title }}</a>
+        </div>
+        <div class="extra content meta">
+          <a href="{{ url_for('recipes', duration=preptime ) }}"><i class="stopwatch icon"></i> {{ preptime }}min</a>
+          <a href="{{ url_for('recipes', duration=cooktime ) }}"><i class="clock outline icon"></i> {{ cooktime }}min</a>
+          <a href="{{ url_for('recipes', tag=tag.lower() ) }}" class="ui tag label right floated">{{ tag }}</a>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="ui pagination menu" style="margin-top: 1rem;">
+  <a class="active item">1</a>
+  <a class="item">2</a>
+  <a class="item">3</a>
+  <div class="disabled item">...</div>
+  <a class="item">6</a>
+  <a class="item">7</a>
+  <a class="item">8</a>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('.dropdown').dropdown();
+    $('.accordion').accordion({exclusive: false});
+    $('.calendar').calendar({type: 'date', minDate: new Date(), selectAdjacentDays: true});
+});
+</script>
+{% endblock %}
