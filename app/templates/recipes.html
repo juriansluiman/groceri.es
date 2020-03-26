@@ -9,7 +9,7 @@
 	<div class="sixteen wide column">
 	  <div class="ui styled fluid accordion">
 	  	<div class="title"><i class="filter icon"></i>Filter your recipes</div>
-		<form class="ui equal width form content">
+		<form class="ui form content">
 			<div class="field">
 			    <label>Query</label>
 			    <div class="ui icon input">
@@ -52,17 +52,6 @@
 			      <option value="120+">120+ minutes</option>
 			    </select>
   			</div>
-
-  			<!-- <div class="field">
-			    <label>Day</label>
-			    <div class="ui calendar">
-			      <div class="ui input left icon">
-			        <i class="calendar icon"></i>
-			        <input type="text" placeholder="Pick up a date" name="date">
-			      </div>
-			    </div>
-		    </div> -->
-
   			<button class="ui button">Filter recipes</button>
 		</form>
 	  </div>
@@ -105,7 +94,7 @@
 <script>
 $(document).ready(function(){
     $('.dropdown').dropdown();
-    $('.accordion').accordion({exclusive: false});
+    $('.accordion').accordion();
     $('.calendar').calendar({type: 'date', minDate: new Date(), selectAdjacentDays: true});
 });
 </script>

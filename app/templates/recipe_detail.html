@@ -3,18 +3,35 @@
 {% set active_page = 'recipes' %}
 
 {% block content %}
-<h1>Fish curry</h1>
+<!-- <h1>Fish curry</h1> -->
 
-<div class="ui fluid horizontal card">
-  <a class="ui image" href="{{ url_for('recipe_detail', id=1, title='fish-curry') }}">
-    <img src="/static/food/example-1.jpg">
-  </a>
-  <div class="content">
-    <a class="header" href="{{ url_for('recipe_detail', id=1, title='fish-curry') }}">Fish curry</a>
-      <a href="" class="ui tag label right floated">Indian</a>
-    <div class="meta">
-      <a><i class="stopwatch icon"></i> 20min</a>
-      <a><i class="utensils icon"></i> serves 4</a>
+<div class="ui grid">
+  <div class="six wide column cards">
+    <div class="ui fluid card">
+      <a class="image" href="{{ url_for('recipe_detail', id=1, title='fish-curry') }}">
+        <img src="/static/food/example-1.jpg">
+      </a>
+      <div class="content">
+        <a class="header" href="{{ url_for('recipe_detail', id=1, title='fish-curry') }}">Fish curry</a>
+      </div>
+
+      <div class="extra content meta">
+        <a href="" class="ui tag label right floated">Indian</a>
+        <a><i class="stopwatch icon"></i> 20min</a>
+        <i class="utensils icon"></i> serves 4
+      </div>
+    </div>
+  </div>
+
+  <div class="ten wide column">
+    <div class="ui fluid card">
+      <div class="content">
+        <p class="header">Hier nog tekst</p>
+      </div>
+
+      <div class="extra content">
+        <p>Hier nog wat meer tekst</p>
+      </div>
     </div>
   </div>
 </div>
