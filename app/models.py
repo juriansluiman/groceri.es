@@ -26,7 +26,7 @@ class Recipe(db.Model):
   category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
   category = db.relationship('Category', back_populates='recipes')
   
-  #ingredients = db.Column()
+  ingredients = db.relationship('RecipeIngredient', back_populates='recipe')
 
 class Category(db.Model):
   id      = db.Column(db.Integer, primary_key=True)
@@ -40,6 +40,14 @@ class Ingredient(db.Model):
   unit = db.Column(db.String(128), nullable=False)
 
   # shopping_category = db.Column()
+
+class RecipeIngredient(db.Model):
+  recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
+  ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'), primary_key=True)
+  amount = db.Column(db.Integer)
+  scaling = db.Column(db.Float, default=1)
+
+  recipe = db.relationship("Recipe", back_populates='ingredients')
 
 class Meal(db.Model):
   id = db.Column(db.Integer, primary_key=True)
