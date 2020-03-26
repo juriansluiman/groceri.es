@@ -1,42 +1,29 @@
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from flask_login import LoginManager
+from flask_babel import Babel
+
 app = Flask(__name__)
+app.secret_key = 'C&Q7dWjosuKSPTKhLEo&6Q828N^QQD'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/app.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Suppress warning
+app.config['LANGUAGES'] = ['en', 'nl']
 
-@app.route('/')
-def home():
-    return render_template('home.html')
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
-@app.route('/scheduler')
-def scheduler():
-    return render_template('scheduler.html')
+login_manager = LoginManager()
+login_manager.init_app(app)
 
-@app.route('/recipes')
-def recipes():
-    return render_template('recipes.html')
+babel = Babel(app)
 
-@app.route('/recipes/<int:id>/<title>')
-def recipe_detail(id, title=None):
-	return render_template('recipe_detail.html')
+import views, models, cli
 
-@app.route('/groceries')
-def groceries():
-    return render_template('groceries.html')
+@login_manager.user_loader
+def load_user(user_id):
+	return models.User(id=user_id)
 
-@app.route('/pantry')
-def pantry():
-    return render_template('pantry.html')
-
-@app.route('/settings')
-def settings():	
-    return render_template('settings.html')
-
-@app.route('/settings/ingredients')
-def ingredients():
-	return render_template('ingredients.html')
-
-@app.route('/settings/tags')
-def tags():
-	return render_template('tags.html')
-
-if __name__ == "__main__":
-    # Only for debugging while developing
-    app.run(host='0.0.0.0', debug=True, port=80)
+@babel.localeselector
+def get_locale():
+	return 'nl'
