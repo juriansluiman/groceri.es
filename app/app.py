@@ -19,12 +19,14 @@ login_manager.init_app(app)
 
 babel = Babel(app)
 
-import views, models, cli
+from models import User
 
 @login_manager.user_loader
 def load_user(user_id):
-	return models.User(id=user_id)
+	return User(id=user_id)
 
 @babel.localeselector
 def get_locale():
 	return 'nl'
+
+import views, models, cli
