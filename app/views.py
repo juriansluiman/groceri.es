@@ -15,19 +15,19 @@ def recipes():
 
 @app.route('/recipes/search')
 def search():
-	query = request.args.get('q')
+    query = request.args.get('q')
 
-	result = {'results': [
-		{'title':'Naan delicious', 'description':'Some delicious tajine with naan', 'image':'/static/food/example-1.jpg', 'url':'/recipes/1/naan'},
-		{'title':'Pasta something', 'description':'A pasta with a smooth sauce', 'image':'/static/food/example-2.jpg', 'url':'/recipes/2/pasta'},
-		{'title':'Fish curry', 'description':'Simple comfort food', 'image':'/static/food/example-3.jpg', 'url':'/recipes/3/curry'}
-	]}
+    result = {'results': [
+        {'title':'Naan delicious', 'description':'Some delicious tajine with naan', 'image':'/static/food/example-1.jpg', 'url':'/recipes/1/naan'},
+        {'title':'Pasta something', 'description':'A pasta with a smooth sauce', 'image':'/static/food/example-2.jpg', 'url':'/recipes/2/pasta'},
+        {'title':'Fish curry', 'description':'Simple comfort food', 'image':'/static/food/example-3.jpg', 'url':'/recipes/3/curry'}
+    ]}
 
-	return jsonify(result)
+    return jsonify(result)
 
 @app.route('/recipes/<int:id>/<title>')
 def recipe_detail(id, title=None):
-	return render_template('recipe_detail.html')
+    return render_template('recipe_detail.html')
 
 @app.route('/groceries')
 def groceries():
@@ -38,17 +38,17 @@ def pantry():
     return render_template('pantry.html')
 
 @app.route('/settings')
-def settings():	
+def settings(): 
     return render_template('settings.html')
 
 @app.route('/settings/ingredients')
 def ingredients():
-	return render_template('ingredients.html')
+    return render_template('ingredients.html')
 
 @app.route('/settings/tags')
 def tags():
-	return render_template('tags.html')
+    return render_template('tags.html')
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-	pass
+    pass
