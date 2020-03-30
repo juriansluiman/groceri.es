@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_babel import Babel
 from config import Config
+from slugify import slugify
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -20,10 +21,14 @@ from models import User
 
 @login_manager.user_loader
 def load_user(user_id):
-	return User(id=user_id)
+    return User(id=user_id)
 
 @babel.localeselector
 def get_locale():
-	return 'nl'
+    return 'nl'
+
+@app.template_filter('slugify')
+def slug(value):
+    return slugify(value)
 
 import views, models, cli
