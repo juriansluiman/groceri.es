@@ -3,13 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_babel import Babel
+from config import Config
 
 app = Flask(__name__)
-app.config.from_object('config.Config')
-# app.config['SECRET_KEY'] = 'C&Q7dWjosuKSPTKhLEo&6Q828N^QQD'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/app.db' # mysql://username:password@server/databasename
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False # Suppress warning
-# app.config['LANGUAGES'] = ['en', 'nl']
+app.config.from_object(Config())
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)

@@ -1,7 +1,14 @@
 import os
 
 class Config:
-	SECRET_KEY = 'C&Q7dWjosuKSPTKhLEo&6Q828N^QQD'
-	SQLALCHEMY_DATABASE_URI = 'sqlite:///db/app.db' # mysql://username:password@server/databasename
-	SQLALCHEMY_TRACK_MODIFICATIONS = False # Suppress warning
-	LANGUAGES = ['en', 'nl']
+    SECRET_KEY = ''
+    
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///db/app.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+    LANGUAGES = ['en', 'nl']
+
+    def __init__(self):
+        for name, var in os.environ.items():
+            if hasattr(Config, name):
+                setattr(Config, name, var)
