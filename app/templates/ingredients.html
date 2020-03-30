@@ -5,5 +5,37 @@
 {% block content %}
 <h1>Ingredients</h1>
 
-<p>Hier komt lijst van ingredienten om ze te wijzigen</p>
+<table class="ui compact selectable striped table">
+    <thead>
+        <tr>
+            <th colspan="3">Name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for ingredient in ingredients %}
+        <tr>
+            <td class="fourteen wide">{{ ingredient.name }}</td>
+            <td class="one wide"><a class="ui button" href="#" style="display: none;"><i class="pen icon"></i></a></td>
+            <td class="one wide"><a class="ui button" href="#"><i class="trash alternative icon"></a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+$(document).ready(function(){
+    $('td.fourteen.wide').hover(
+        function() {
+            $(this).next().children().show()
+        }, function() {
+            $(this).next().children().hide()
+        }
+    );
+    $('td.fourteen.wide').click(function(){
+        var tagName = $(this).text()
+        $(this).html('<div class="ui action input"><input type="text" value="' + tagName + '"><button class="ui button">Save</button></div>')
+    });
+});
+</script>
 {% endblock %}

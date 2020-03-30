@@ -1,9 +1,9 @@
 {% extends 'layout.html' %}
-{% set title = 'Tags' %}
+{% set title = 'Categories' %}
 {% set active_page = 'settings' %}
 
 {% block content %}
-<h1>Tags</h1>
+<h1>Categories</h1>
 
 <table class="ui compact selectable striped table">
     <thead>
@@ -13,9 +13,9 @@
     </thead>
 
     <tbody>
-        {% for tag in tags %}
+        {% for category in categories %}
         <tr>
-            <td class="fourteen wide">{{ tag.name }}</td>
+            <td class="fourteen wide">{{ category.name }}</td>
             <td class="one wide"><a class="ui button" href="#" style="display: none;"><i class="pen icon"></i></a></td>
             <td class="one wide"><a class="ui button" href="#"><i class="trash alternative icon"></a></td>
         </tr>

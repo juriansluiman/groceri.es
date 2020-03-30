@@ -10,23 +10,20 @@
 </style>
 <h1><i class="lightbulb icon"></i>{{ _("Today's inspiration") }}</h1>
 <div class="ui grid">
-  {% for i in range(4) %}
-    {% set id    = [1,2,3] | random %}
-    {% set title = ['Fish curry', 'Pasta something', 'Naan delicious'] | random %}
-    {% set preptime = [0,5,10,15,20,25,30,35,40,45,50,60] | random %}
-    {% set cooktime = [15,20,25,30,45,60] | random %}
-    {% set tag   = ['Italian', 'Indian', 'Moroccan'] | random %}
+  {% for recipe in recipes %}
+    {% set url   = url_for('recipe', id=recipe.id, title=recipe.name|slugify) %}
+    {% set tag   = recipe.category.name %}
     <div class="four wide column">
       <div class="ui card">
-        <a class="image" href="{{ url_for('recipe_detail', id=id, title='slug-here') }}">
-          <img src="/static/food/example-{{ id }}.jpg">
+        <a class="image" href="{{ url}}">
+          <img src="/static/food/example-{{ recipe.id }}.jpg">
         </a>
         <div class="content">
-          <a class="header" href="{{ url_for('recipe_detail', id=id, title='slug-here') }}" style="margin-top: 1rem;">{{ title }}</a>
+          <a class="header" href="{{ url }}" style="margin-top: 1rem;">{{ recipe.name }}</a>
         </div>
         <div class="extra content meta">
-          <a href="{{ url_for('recipes', duration=preptime ) }}"><i class="stopwatch icon"></i> {{ preptime }}min</a>
-          <a href="{{ url_for('recipes', duration=cooktime ) }}"><i class="clock outline icon"></i> {{ cooktime }}min</a>
+          <a href="{{ url_for('recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
+          <a href="{{ url_for('recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
           <a href="{{ url_for('recipes', tag=tag.lower() ) }}" class="ui tag label right floated">{{ tag }}</a>
         </div>
       </div>

@@ -11,11 +11,11 @@
         <form class="ui form">
           <div class="field">
             <label>Name</label>
-            <input type="text" name="name" placeholder="First Name" value="Jurian">
+            <input type="text" name="name" placeholder="First Name" value="{{ user.name }}">
           </div>
           <div class="field">
             <label>Email</label>
-            <input type="text" name="email" placeholder="Email address" value="jurian@slui.mn">
+            <input type="text" name="email" placeholder="Email address" value="{{ user.email }}">
           </div>
           <div class="field">
             <label>Password</label>
@@ -33,7 +33,7 @@
             <div class="centered column">
               <a class="ui huge statistic" href="{{ url_for('recipes') }}">
                 <div class="value">
-                  250
+                  {{ count.recipes }}
                 </div>
                 <div class="label">
                   Recipes
@@ -45,7 +45,7 @@
             <div class="column">
               <a class="ui statistic" href="{{ url_for('ingredients') }}">
                 <div class="value">
-                  1,200
+                  {{ count.ingredients }}
                 </div>
                 <div class="label">
                   Ingredients
@@ -56,7 +56,7 @@
             <div class="column">
               <a class="ui statistic" href="{{ url_for('tags') }}">
                 <div class="value">
-                  22
+                  {{ count.tags }}
                 </div>
                 <div class="label">
                   Tags
@@ -65,9 +65,9 @@
             </div>
 
             <div class="column">
-              <a class="ui statistic" href="">
+              <a class="ui statistic" href="{{ url_for('categories') }}">
                 <div class="value">
-                  7
+                  {{ count.categories }}
                 </div>
                 <div class="label">
                   Categories
@@ -82,10 +82,10 @@
   <div class="row" style="margin-top: 2rem;">
     <div class="eight wide column ui">
         <h2>Application settings</h2>
-        
+
         <form class="ui form">
           <div class="field">
-            <label>Grocery day</label>
+            <label>Grocery day ({{ settings.grocery_day.value }})</label>
             <select class="ui fluid dropdown">
                 <option value="sat" selected="selected">Saturday</option>
                 <option value="sun">Sunday</option>
@@ -98,12 +98,12 @@
           </div>
 
           <div class="field">
-            <label>Default servings</label>
+            <label>Default servings ({{ settings.default_servings.value }})</label>
             <div class="ui labeled ticked slider"></div>
           </div>
 
           <div class="field">
-            <label>Default course listing</label>
+            <label>Default course listing ()</label>
             <select multiple="" class="ui dropdown courses">
               <option value="">Select course</option>
               <option value="amuse">Amuse</option>
@@ -115,7 +115,7 @@
           </div>
 
           <div class="field">
-            <label>Default duration listing</label>
+            <label>Default duration listing ()</label>
             <select multiple="" class="ui dropdown">
               <option value="">Select duration</option>
               <option value="0-15" selected>0-15 minutes</option>
@@ -129,7 +129,7 @@
           <div class="inline field">
             <div class="ui toggle checkbox">
               <input type="checkbox" tabindex="0" class="hidden">
-              <label>Allow user registration</label>
+              <label>Allow user registration ({{ settings.allow_user_registration.value }})</label>
             </div>
           </div>
           
