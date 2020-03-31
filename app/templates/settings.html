@@ -126,6 +126,16 @@
             </select>
           </div>
 
+          <div class="field">
+            <label>Application language</label>
+            <select class="ui dropdown">
+              <option value="">Select language</option>
+              {% for language in settings.available_languages %}
+                <option value="{{ language }}"{% if settings.default_language.value == language %} selected{% endif %}>{{ language }}</option>
+              {% endfor %}
+            </select>
+          </div>
+
           <div class="inline field">
             <div class="ui toggle checkbox">
               <input type="checkbox" tabindex="0" class="hidden">

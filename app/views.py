@@ -59,6 +59,8 @@ def settings():
     settings = Setting.query.all()
     settings = dict([ (s.name, s) for s in settings ])
 
+    settings['available_languages'] = app.config['LANGUAGES']
+
     return render_template('settings.html', user=user, count=count, settings=settings)
 
 @app.route('/settings/ingredients')
@@ -98,6 +100,7 @@ def generator():
     grocery_day             = Setting('grocery_day', 'sat')
     default_servings        = Setting('default_servings', '2')
     allow_user_registration = Setting('allow_user_registration', 'true')
+    default_language        = Setting('default_language', 'nl')
 
     starter   = Category('Starter')
     main      = Category('Main')
@@ -164,6 +167,7 @@ def generator():
     session.add(grocery_day)
     session.add(default_servings)
     session.add(allow_user_registration)
+    session.add(default_language)
     session.add(starter)
     session.add(main)
     session.add(side_dish)

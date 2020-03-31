@@ -17,15 +17,23 @@ login_manager.init_app(app)
 
 babel = Babel(app)
 
-from models import User
+from models import User, Setting
 
 @login_manager.user_loader
 def load_user(user_id):
+    """Load user with specified user ID."""
     return User(id=user_id)
 
 @babel.localeselector
 def get_locale():
-    return 'nl'
+    """Get the selected locale from user settings."""
+    setting = Setting.query.filter(Setting.name == 'default_language').first()
+
+    if setting is not None:
+        return setting.value
+
+    # Return default language when none found
+    return 'en'
 
 @app.template_filter('slugify')
 def slug(value):
