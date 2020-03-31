@@ -2,31 +2,31 @@
 {% set active_page = 'settings' %}
 
 {% block content %}
-<h1>Settings</h1>
+<h1>{{ _('Settings') }}</h1>
 
 <div class="ui divided grid">
   <div class="row">
     <div class="eight wide column ui">
-        <h2>Your profile</h2>
+        <h2>{{ _('Your profile') }}</h2>
         <form class="ui form">
           <div class="field">
-            <label>Name</label>
-            <input type="text" name="name" placeholder="First Name" value="{{ user.name }}">
+            <label>{{ _('Name') }}</label>
+            <input type="text" name="name" placeholder="{{ _('Name') }}" value="{{ user.name }}">
           </div>
           <div class="field">
-            <label>Email</label>
-            <input type="text" name="email" placeholder="Email address" value="{{ user.email }}">
+            <label>{{ _('Email address') }}</label>
+            <input type="text" name="email" placeholder="{{ _('Email address') }}" value="{{ user.email }}">
           </div>
           <div class="field">
-            <label>Password</label>
-            <input type="password" name="password" placeholder="Password" value="*************">
+            <label>{{ _('Password') }}</label>
+            <input type="password" name="password" placeholder="{{ _('Password') }}" value="*************">
           </div>
-          <button class="ui button" type="submit">Save profile</button>
+          <button class="ui button" type="submit">{{ _('Save profile') }}</button>
         </form>
     </div>
 
     <div class="eight wide column ui">
-        <h2>Your data</h2>
+        <h2>{{ _('Your data') }}</h2>
         
         <div class="ui three column grid">
           <div class="row">
@@ -36,7 +36,7 @@
                   {{ count.recipes }}
                 </div>
                 <div class="label">
-                  Recipes
+                  {{ _('Recipes') }}
                 </div>
               </a>
             </div>
@@ -48,7 +48,7 @@
                   {{ count.ingredients }}
                 </div>
                 <div class="label">
-                  Ingredients
+                  {{ _('Ingredients') }}
                 </div>
               </a>
             </div>
@@ -59,7 +59,7 @@
                   {{ count.tags }}
                 </div>
                 <div class="label">
-                  Tags
+                  {{ _('Tags') }}
                 </div>
               </a>
             </div>
@@ -70,7 +70,7 @@
                   {{ count.categories }}
                 </div>
                 <div class="label">
-                  Categories
+                  {{ _('Categories') }}
                 </div>
               </a>
             </div>
@@ -81,29 +81,29 @@
 
   <div class="row" style="margin-top: 2rem;">
     <div class="eight wide column ui">
-        <h2>Application settings</h2>
+        <h2>{{ _('Application settings') }}</h2>
 
         <form class="ui form">
           <div class="field">
-            <label>Grocery day ({{ settings.grocery_day.value }})</label>
+            <label>{{ _('Grocery day') }} ({{ settings.grocery_day.value }})</label>
             <select class="ui fluid dropdown">
-                <option value="sat" selected="selected">Saturday</option>
-                <option value="sun">Sunday</option>
-                <option value="mon">Monday</option>
-                <option value="tue">Tuesday</option>
-                <option value="wed">Wednesday</option>
-                <option value="thu">Thursday</option>
-                <option value="fri">Friday</option>
+                <option value="sat" selected="selected">{{ _('Saturday') }}</option>
+                <option value="sun">{{ _('Sunday') }}</option>
+                <option value="mon">{{ _('Monday') }}</option>
+                <option value="tue">{{ _('Tuesday') }}</option>
+                <option value="wed">{{ _('Wednesday') }}</option>
+                <option value="thu">{{ _('Thursday') }}</option>
+                <option value="fri">{{ _('Friday') }}</option>
               </select>
           </div>
 
           <div class="field">
-            <label>Default servings ({{ settings.default_servings.value }})</label>
+            <label>{{ _('Default servings') }} ({{ settings.default_servings.value }})</label>
             <div class="ui labeled ticked slider"></div>
           </div>
 
           <div class="field">
-            <label>Default course listing ()</label>
+            <label>{{ _('Default category listing') }} ()</label>
             <select multiple="" class="ui dropdown courses">
               <option value="">Select course</option>
               <option value="amuse">Amuse</option>
@@ -115,7 +115,7 @@
           </div>
 
           <div class="field">
-            <label>Default duration listing ()</label>
+            <label>{{ _('Default duration listing') }} ()</label>
             <select multiple="" class="ui dropdown">
               <option value="">Select duration</option>
               <option value="0-15" selected>0-15 minutes</option>
@@ -127,9 +127,9 @@
           </div>
 
           <div class="field">
-            <label>Application language</label>
+            <label>{{ _('Application language') }}</label>
             <select class="ui dropdown">
-              <option value="">Select language</option>
+              <option value="">{{ _('Select language') }}</option>
               {% for language in settings.available_languages %}
                 {% set language_name = language | language_name %}
                 <option value="{{ language }}"{% if settings.default_language.value == language %} selected{% endif %}>
@@ -142,27 +142,27 @@
           <div class="inline field">
             <div class="ui toggle checkbox">
               <input type="checkbox" tabindex="0" class="hidden">
-              <label>Allow user registration ({{ settings.allow_user_registration.value }})</label>
+              <label>{{ _('Allow user registration') }} ({{ settings.allow_user_registration.value }})</label>
             </div>
           </div>
           
-          <button class="ui button" type="submit">Save settings</button>
+          <button class="ui button" type="submit">{{ _('Save settings') }}</button>
         </form>
 
     </div>
 
     <div class="eight wide column ui">
-        <h2>About groceri.es</h2>
+        <h2>{{ _('About groceri.es') }}</h2>
         
         <div style="display: flex; justify-content: center; margin-bottom: 2rem;">
           <i class="centered hugo leaf icon" style="line-height: 1; font-size: 5rem;"></i>
         </div>
         
-        <p>groceri.es is a self-hosted webapplication to help catalogue your recipes, schedule your meals during the week and create shopping lists for groceries based on your meal planning.</p>
+        <p>{{ _('groceri.es is a self-hosted webapplication to help catalogue your recipes, schedule your meals during the week and create shopping lists for groceries based on your meal planning.') }}</p>
 
-        <p>The goal of groceri.es is to ease your meal planning based on known recipes and to auto generate your groceries shopping list. The application is an opinionated design based on how I used to schedule meals with Google Keep and delicious.magazine.</p>
+        <p>{{ _('The goal of groceri.es is to ease your meal planning based on known recipes and to auto generate your groceries shopping list. The application is an opinionated design based on how I used to schedule meals with Google Keep and delicious.magazine.') }}</p>
 
-        <p>groceri.es runs in a  a docker container you can host by yourself. The code is open source and using Flask and Fomantic UI.</p>        
+        <p>{{ _('groceri.es runs in a  a docker container you can host by yourself. The code is open source and using Flask and Fomantic UI.') }}</p>        
     </div>
   </div>
 </div>

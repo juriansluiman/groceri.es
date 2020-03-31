@@ -1,29 +1,29 @@
 {% extends 'layout.html' %}
-{% set title = 'Recipes' %}
+{% set title = _('Recipes') %}
 {% set active_page = 'recipes' %}
 
 {% block content %}
-<h1>Your recipes</h1>
+<h1>{{ _('Your recipes') }}</h1>
 
 <div class="ui stackable grid">
 	<div class="sixteen wide column">
 	  <div class="ui styled fluid accordion">
-	  	<div class="title"><i class="filter icon"></i>Filter your recipes</div>
+	  	<div class="title"><i class="filter icon"></i>{{ _('Filter your recipes') }}</div>
         <!-- 
             Split this box. Make it smaller and put the query outside. Also flag for favorite / date picker
          -->
 		<form class="ui form content">
 			<div class="field">
-			    <label>Query</label>
+			    <label>{{ _('Query') }}</label>
 			    <div class="ui icon input">
 			    	<input type="text" placeholder="Search for recipe or ingredient"><i class="search link icon"></i>
 			    </div>
 			</div>
 
 		  	<div class="field">
-			    <label>Course</label>
+			    <label>{{ _('Category') }}</label>
 			    <select multiple="" class="ui dropdown courses">
-			      <option value="">Select course</option>
+			      <option value="">{{ _('Select category') }}</option>
 			      <option value="amuse">Amuse</option>
 			      <option value="starter">Starter</option>
 			      <option selected value="main">Main</option>
@@ -33,9 +33,9 @@
   			</div>
 
   			<div class="field">
-			    <label>Tag</label>
+			    <label>{{ _('Tag') }}</label>
 			    <select multiple="" class="ui search dropdown">
-			      <option value="">Select tag</option>
+			      <option value="">{{ _('Select tag') }}</option>
 			      <option value="italian">Italian</option>
 			      <option value="vegetarian">Vegetarian</option>
 			      <option value="moroccan">Moroccan</option>
@@ -45,9 +45,9 @@
   			</div>
 
   			<div class="field">
-			    <label>Duration</label>
+			    <label>{{ _('Duration') }}</label>
 			    <select multiple="" class="ui dropdown">
-			      <option value="">Select duration</option>
+			      <option value="">{{ _('Select duration') }}</option>
 			      <option value="0-15">0-15 minutes</option>
 			      <option value="15-30">15-30 minutes</option>
 			      <option value="30-60">30-60 minutes</option>
@@ -55,7 +55,7 @@
 			      <option value="120+">120+ minutes</option>
 			    </select>
   			</div>
-  			<button class="ui button">Filter recipes</button>
+  			<button class="ui button">{{ _('Filter recipes') }}</button>
 		</form>
 	  </div>
 	</div>

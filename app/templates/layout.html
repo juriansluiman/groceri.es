@@ -49,7 +49,14 @@
     {% block content %}{% endblock %}
     <div class="ui divider"></div>
     <footer style="margin-bottom: 1rem;">
-      <p><i class="leaf icon"></i>groceri.es version 0.1. This software is licensed under the MIT. Made out of curiosity by <a href="https://jurian.slui.mn">Jurian Sluiman</a>. View the source code at <a href="https://github.com/juriansluiman/groceri.es"><i class="github icon"></i>GitHub</a>.</p>
+      <p>
+        {% autoescape false %}
+        <i class="leaf icon"></i>groceri.es {{ _('version') }} 0.1.
+        {{ _('This software is licensed under the MIT.') }}
+        {{ _('Made out of curiosity by %(link)s.', link='<a href="https://jurian.slui.mn">Jurian Sluiman</a>') }}
+        {{ _('View the source code at %(link)s.', link='<a href="https://github.com/juriansluiman/groceri.es"><i class="github icon"></i>GitHub</a>') }}
+        {% endautoescape %}
+      </p>
     </footer>
   </main>
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-30 19:09+0000\n"
+"POT-Creation-Date: 2020-03-31 13:35+0000\n"
 "PO-Revision-Date: 2020-03-26 08:49+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: nl\n"
@@ -17,6 +17,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.8.0\n"
+
+#: templates/categories.html:2 templates/categories.html:6
+#: templates/settings.html:73
+msgid "Categories"
+msgstr ""
+
+#: templates/categories.html:11 templates/ingredients.html:11
+#: templates/settings.html:13 templates/settings.html:14 templates/tags.html:11
+msgid "Name"
+msgstr ""
 
 #: templates/home.html:11
 msgid "Today's inspiration"
@@ -44,5 +54,193 @@ msgstr ""
 
 #: templates/home.html:123
 msgid "Scheduler"
+msgstr ""
+
+#: templates/ingredients.html:2 templates/ingredients.html:6
+#: templates/settings.html:51
+msgid "Ingredients"
+msgstr ""
+
+#: templates/layout.html:54
+msgid "version"
+msgstr ""
+
+#: templates/layout.html:55
+msgid "This software is licensed under the MIT."
+msgstr ""
+
+#: templates/layout.html:56
+#, python-format
+msgid "Made out of curiosity by %(link)s."
+msgstr ""
+
+#: templates/layout.html:57
+#, python-format
+msgid "View the source code at %(link)s."
+msgstr ""
+
+#: templates/pantry.html:5
+msgid "Pantry"
+msgstr ""
+
+#: templates/recipes.html:2 templates/settings.html:39
+msgid "Recipes"
+msgstr ""
+
+#: templates/recipes.html:6
+msgid "Your recipes"
+msgstr ""
+
+#: templates/recipes.html:11
+msgid "Filter your recipes"
+msgstr ""
+
+#: templates/recipes.html:17
+msgid "Query"
+msgstr ""
+
+#: templates/recipes.html:24
+msgid "Category"
+msgstr ""
+
+#: templates/recipes.html:26
+msgid "Select category"
+msgstr ""
+
+#: templates/recipes.html:36
+msgid "Tag"
+msgstr ""
+
+#: templates/recipes.html:38
+msgid "Select tag"
+msgstr ""
+
+#: templates/recipes.html:48
+msgid "Duration"
+msgstr ""
+
+#: templates/recipes.html:50
+msgid "Select duration"
+msgstr ""
+
+#: templates/recipes.html:58
+msgid "Filter recipes"
+msgstr ""
+
+#: templates/settings.html:5
+msgid "Settings"
+msgstr ""
+
+#: templates/settings.html:10
+msgid "Your profile"
+msgstr ""
+
+#: templates/settings.html:17 templates/settings.html:18
+msgid "Email address"
+msgstr ""
+
+#: templates/settings.html:21 templates/settings.html:22
+msgid "Password"
+msgstr ""
+
+#: templates/settings.html:24
+msgid "Save profile"
+msgstr ""
+
+#: templates/settings.html:29
+msgid "Your data"
+msgstr ""
+
+#: templates/settings.html:62 templates/tags.html:6
+msgid "Tags"
+msgstr ""
+
+#: templates/settings.html:84
+msgid "Application settings"
+msgstr ""
+
+#: templates/settings.html:88
+msgid "Grocery day"
+msgstr ""
+
+#: templates/settings.html:90
+msgid "Saturday"
+msgstr ""
+
+#: templates/settings.html:91
+msgid "Sunday"
+msgstr ""
+
+#: templates/settings.html:92
+msgid "Monday"
+msgstr ""
+
+#: templates/settings.html:93
+msgid "Tuesday"
+msgstr ""
+
+#: templates/settings.html:94
+msgid "Wednesday"
+msgstr ""
+
+#: templates/settings.html:95
+msgid "Thursday"
+msgstr ""
+
+#: templates/settings.html:96
+msgid "Friday"
+msgstr ""
+
+#: templates/settings.html:101
+msgid "Default servings"
+msgstr ""
+
+#: templates/settings.html:106
+msgid "Default category listing"
+msgstr ""
+
+#: templates/settings.html:118
+msgid "Default duration listing"
+msgstr ""
+
+#: templates/settings.html:130
+msgid "Application language"
+msgstr ""
+
+#: templates/settings.html:132
+msgid "Select language"
+msgstr ""
+
+#: templates/settings.html:145
+msgid "Allow user registration"
+msgstr ""
+
+#: templates/settings.html:149
+msgid "Save settings"
+msgstr ""
+
+#: templates/settings.html:155
+msgid "About groceri.es"
+msgstr ""
+
+#: templates/settings.html:161
+msgid ""
+"groceri.es is a self-hosted webapplication to help catalogue your "
+"recipes, schedule your meals during the week and create shopping lists "
+"for groceries based on your meal planning."
+msgstr ""
+
+#: templates/settings.html:163
+msgid ""
+"The goal of groceri.es is to ease your meal planning based on known "
+"recipes and to auto generate your groceries shopping list. The "
+"application is an opinionated design based on how I used to schedule "
+"meals with Google Keep and delicious.magazine."
+msgstr ""
+
+#: templates/settings.html:165
+msgid ""
+"groceri.es runs in a  a docker container you can host by yourself. The "
+"code is open source and using Flask and Fomantic UI."
 msgstr ""
 
