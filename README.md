@@ -9,7 +9,7 @@ groceri.es is built by [Jurian Sluiman](https://jurian.slui.mn) and its design
 of groceri.es is opinionated how I perform my meal planning and grocery shopping
 in the last years.
 
-![Screenshot of the home page]()
+![Screenshot of the home page](https://bitbucket.org/juriansluiman/groceri.es/raw/540b866f193c0b8aea1577c645b8a80d10de5f67/docs/screenshot.png)
 
 ## Functional design
 The basic idea is you do you groceries weekly and plan the meals ahead for that
