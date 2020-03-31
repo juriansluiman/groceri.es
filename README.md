@@ -159,3 +159,45 @@ production!
     docker run -d --rm --name groceri.es -p 1234:80 -v $(pwd)/app:/app \
      -e FLASK_APP=app.py -e FLASK_DEBUG=1 groceri.es \
      flask run --host=0.0.0.0 --port=80
+
+### Database and persistency
+By default Flask uses SQLAlchemy with a database URI `sqlite:///db/app.db`. This
+creates as SQLite database in the `/app/db/` folder of the image. Please be aware
+the container should be ephemeral and removing the container will destroy all
+your data.
+
+You can persits the database storage in several ways:
+
+**Use a docker volume**
+Create a docker volume and mount the volume at `/app/db` so the database file
+will be created inside the mounted volume.
+
+    docker volume create groceri.es-db
+    docker run -d --name groceri.es -v groceri.es-db:/app/db -p 80:80 groceri.es
+
+**Use a SQL server**
+The more performant method is to create a separate container with an SQL server,
+for example myself and link that container to the groceri.es container.
+
+It is possible to change the database URI from SQLAlchemy as the URI is stored 
+in the Config object. This object contains all default config variables but they
+can be overridden by a docker env flag:
+
+    docker run -d -e MY_CONFIG_KEY='my-custom-value' groceri.es
+
+Knowing this, it is possible to create a MySQL container, link it to the
+application container and change it's `SQLALCHEMY_DATABASE_URI` key with the
+new database server. The format of the URI is
+`dialect+driver://username:password@host:port/database`.
+
+    docker run -d --name groceries-db \
+        -e MYSQL_RANDOM_ROOT_PASSWORD='yes' \
+        -e MYSQL_DATABASE='groceries' \
+        -e MYSQL_USER='groceries' \
+        -e MYSQL_PASSWORD='my-random-password' \
+        mysql:8.0
+
+    docker run -d --name groceri.es -p 80:80 \
+        --link groceries-db
+        -e SQLALCHEMY_DATABASE_URI='mysql://groceries:my-random-password@groceries-db/groceries' \
+        groceri.es
