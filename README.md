@@ -9,6 +9,8 @@ groceri.es is built by [Jurian Sluiman](https://jurian.slui.mn) and its design
 of groceri.es is opinionated how I perform my meal planning and grocery shopping
 in the last years.
 
+![Screenshot of the home page]()
+
 ## Functional design
 The basic idea is you do you groceries weekly and plan the meals ahead for that
 week. You can skip days if you plan to eat outdoors, this is your planning for
@@ -108,7 +110,17 @@ assumed you have plenty in stock.
 
 ## Source code and software dependencies
 The source code is a Flask application with the help of the uwsgi-nginx-flask
-docker image. It uses 
+docker image. It is powered by several great projects:
+
+1. **uwsgi-nginx-flask**: groceri.es is a single docker image based on
+uwsgi-nginx-flask. This image contains the last Flask release and includes nginx
+as web browser and uWSGI to run the python application.
+2. **Flask-Login**: to provide user management in Flask applications
+3. **Flask-Babel**: to provide i18n (user translations) in Flask applications
+4. **Flask-Migrate**: to help users to keep the database up to date with new
+releases of groceri.es. If you (re)start a docker container, it will
+automatically migrate your database to the version from the container.
+5. **Fomantic UI**: as CSS framework to quickly build an interface for this app
 
 ## Run groceri.es
 The docker image is meant to be ephemeral, which means the container can be
