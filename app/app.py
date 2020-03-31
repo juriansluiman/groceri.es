@@ -38,10 +38,12 @@ def get_locale():
 
 @app.template_filter('slugify')
 def slug(value):
+    """Jinja2 filter to slugify text."""
     return slugify(value)
 
 @app.template_filter('language_name')
 def language_name(value):
+    """Jinja2 filter to get language object from language code."""
     return pycountry.languages.get(alpha_2=value)
 
 import views, models, cli
