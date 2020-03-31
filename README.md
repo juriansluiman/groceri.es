@@ -172,8 +172,8 @@ You can persits the database storage in several ways:
 Create a docker volume and mount the volume at `/app/db` so the database file
 will be created inside the mounted volume.
 
-    docker volume create groceri.es-db
-    docker run -d --name groceri.es -v groceri.es-db:/app/db -p 80:80 groceri.es
+    docker volume create groceries-db
+    docker run -d --name groceri.es -v groceries-db:/app/db -p 80:80 groceri.es
 
 **Use a SQL server**
 The more performant method is to create a separate container with an SQL server,
@@ -198,6 +198,6 @@ new database server. The format of the URI is
         mysql:8.0
 
     docker run -d --name groceri.es -p 80:80 \
-        --link groceries-db
+        --link groceries-db \
         -e SQLALCHEMY_DATABASE_URI='mysql+pymysql://groceries:my-random-password@groceries-db/groceries?charset=utf8mb4' \
         groceri.es
