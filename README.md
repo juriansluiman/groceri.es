@@ -30,7 +30,7 @@ you have to add those to the groceries yourself.
 
 The process above is set out in a functional flow diagram below:
 
-![Flow chart of groceri.es functional design]()
+![Flow chart of groceri.es functional design](https://bitbucket.org/juriansluiman/groceri.es/raw/0e49d7db92a5db90c6ecd6ba6f4548d05e7fd56e/docs/Functional-flow.svg)
 
 ### Pantry
 Some ingredients are part of you pantry and you buy them in bulk. groceri.es will
@@ -59,7 +59,7 @@ people. The default servings of a recipe to be calculated, can be set in the
 settings menu.
 
 ## Technical design
-![UML of the data models]()
+![UML of the data models](https://bitbucket.org/juriansluiman/groceri.es/raw/0e49d7db92a5db90c6ecd6ba6f4548d05e7fd56e/docs/Technical-design.svg)
 
 Basically the application is a simple CRUD system around recipes and meals. In
 the domain model, a **recipe** is a set of instructions for preparing a
