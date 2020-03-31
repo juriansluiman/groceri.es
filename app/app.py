@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_babel import Babel
 from config import Config
 from slugify import slugify
+import pycountry
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -38,5 +39,9 @@ def get_locale():
 @app.template_filter('slugify')
 def slug(value):
     return slugify(value)
+
+@app.template_filter('language_name')
+def language_name(value):
+    return pycountry.languages.get(alpha_2=value)
 
 import views, models, cli

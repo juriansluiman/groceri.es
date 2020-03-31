@@ -131,7 +131,10 @@
             <select class="ui dropdown">
               <option value="">Select language</option>
               {% for language in settings.available_languages %}
-                <option value="{{ language }}"{% if settings.default_language.value == language %} selected{% endif %}>{{ language }}</option>
+                {% set language_name = language | language_name %}
+                <option value="{{ language }}"{% if settings.default_language.value == language %} selected{% endif %}>
+                  {{ language_name.name }}
+                </option>
               {% endfor %}
             </select>
           </div>
