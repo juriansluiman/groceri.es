@@ -4,3 +4,4 @@ Flask-Babel==1.0.0
 Flask-WTF==0.14.3
 python-slugify==4.0.0
 pycountry==19.8.18
+PyMySQL==0.9.3

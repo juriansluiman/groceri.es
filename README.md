@@ -199,5 +199,5 @@ new database server. The format of the URI is
 
     docker run -d --name groceri.es -p 80:80 \
         --link groceries-db
-        -e SQLALCHEMY_DATABASE_URI='mysql://groceries:my-random-password@groceries-db/groceries' \
+        -e SQLALCHEMY_DATABASE_URI='mysql+pymysql://groceries:my-random-password@groceries-db/groceries?charset=utf8mb4' \
         groceri.es
