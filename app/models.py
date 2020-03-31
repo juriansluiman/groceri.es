@@ -8,7 +8,7 @@ class User(db.Model):
 
 class Setting(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(16), nullable=False)
+    name = db.Column(db.String(32), nullable=False)
     value = db.Column(db.String(128), nullable=True)
 
     def __init__(self, name, value):
