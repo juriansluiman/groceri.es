@@ -146,18 +146,20 @@ Create the docker image from source
 ### Run the container
 To run an image which you just created, it simply is `docker run`:
 
-    docker run -d --name groceri.es -p 80:80 groceri.es
+    docker run -d --name groceri.es -p 80:80 -e SECRET_KEY='my-secret-here' groceri.es
 
 This will spin up nginx inside the container and will serve the site at port 80
 on your host machine. If you want to use a different port, for example 1234, 
-change the port argument to `-p 1234:80`.
+change the port argument to `-p 1234:80`. More information about the `SECRET_KEY`
+parameter can be read at
+[the section about flask sessions](#markdown-header-flask-session-and-secret_key)
 
 If you need to run Flask in development setup, you can use the below command to 
 run it with the built in webserver. Mind this is not meant to scale for
 production!
 
     docker run -d --rm --name groceri.es -p 1234:80 -v $(pwd)/app:/app \
-     -e FLASK_APP=app.py -e FLASK_DEBUG=1 groceri.es \
+     -e FLASK_APP=app.py -e FLASK_DEBUG=1 -e SECRET_KEY='my-secret-here' groceri.es \
      flask run --host=0.0.0.0 --port=80
 
 ### Database and persistency
@@ -169,13 +171,15 @@ your data.
 You can persits the database storage in several ways:
 
 **Use a docker volume**
+
 Create a docker volume and mount the volume at `/app/db` so the database file
 will be created inside the mounted volume.
 
     docker volume create groceries-db
-    docker run -d --name groceri.es -v groceries-db:/app/db -p 80:80 groceri.es
+    docker run -d --name groceri.es -v groceries-db:/app/db -e SECRET_KEY='my-secret-here' -p 80:80 groceri.es
 
 **Use a SQL server**
+
 The more performant method is to create a separate container with an SQL server,
 for example myself and link that container to the groceri.es container.
 
@@ -200,4 +204,18 @@ new database server. The format of the URI is
     docker run -d --name groceri.es -p 80:80 \
         --link groceries-db \
         -e SQLALCHEMY_DATABASE_URI='mysql+pymysql://groceries:my-random-password@groceries-db/groceries?charset=utf8mb4' \
+        -e -e SECRET_KEY='my-secret-here' \
         groceri.es
+
+### Flask session and SECRET_KEY
+
+In all examples a variable `SECRET_KEY` is provided to run the docker container.
+This env variable works similar to the `SQLALCHEMY_DATABASE_URI` env variable, 
+as it overwrites the configuration value of the Flask Config. 
+
+You must provide a secret key to Flask to make sessions work. The session is 
+required for CSRF protection and to keep users logged into the application.
+
+There are security measures by Docker using `docker secret` to keep variables
+secret in a Docker environment. However at this moment docker secrets are not
+supported in groceri.es. 
