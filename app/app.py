@@ -18,13 +18,14 @@ login_manager.login_view = 'login'
 
 babel = Babel(app)
 
-from models import User
+from models import User  # noqa
 @login_manager.user_loader
 def load_user(user_id):
     """Load user with specified user ID."""
     return User.query.get(int(user_id))
 
-from models import Setting
+
+from models import Setting  # noqa
 @babel.localeselector
 def get_locale():
     """Get the selected locale from user settings."""
@@ -36,15 +37,18 @@ def get_locale():
     # Return default language when none found
     return 'en'
 
+
 @app.template_filter('slugify')
 def slug(value):
     """Jinja2 filter to slugify text."""
     return slugify(value)
+
 
 @app.template_filter('language_name')
 def language_name(value):
     """Jinja2 filter to get language object from language code."""
     return pycountry.languages.get(alpha_2=value)
 
+
 """Import all web routes and CLI routes to run this app"""
-import views, cli
+import views, cli  # noqa

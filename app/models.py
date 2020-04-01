@@ -2,6 +2,7 @@ from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
@@ -16,6 +17,7 @@ class User(UserMixin, db.Model):
         """Validate given password to the user's password"""
         return check_password_hash(self.password, password)
 
+
 class Setting(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32), nullable=False)
@@ -25,10 +27,11 @@ class Setting(db.Model):
         self.name = name
         self.value = value
 
+
 class Recipe(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
-    
+
     prep_time = db.Column(db.Integer)
     cook_time = db.Column(db.Integer)
 
@@ -39,8 +42,9 @@ class Recipe(db.Model):
 
     category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
     category = db.relationship('Category', back_populates='recipes')
-    
+
     ingredients = db.relationship('RecipeIngredient', back_populates='recipe')
+
 
 class Category(db.Model):
     id      = db.Column(db.Integer, primary_key=True)
@@ -51,12 +55,14 @@ class Category(db.Model):
     def __init__(self, name):
         self.name = name
 
+
 class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
     unit = db.Column(db.String(128), nullable=False)
 
     # shopping_category = db.Column()
+
 
 class RecipeIngredient(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
@@ -65,6 +71,7 @@ class RecipeIngredient(db.Model):
     scaling = db.Column(db.Float, default=1)
 
     recipe = db.relationship("Recipe", back_populates='ingredients')
+
 
 class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -75,11 +82,13 @@ class Meal(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
     recipe = db.relationship('Recipe')
 
+
 class Grocery(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     #ingredient_id = db.Column()
     name = db.Column(db.String(128), nullable=True)
     #meal_id = db.Column() # Verwijderen meal zorgt voor verwijderen boodschappen
+
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)

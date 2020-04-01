@@ -6,16 +6,19 @@ from sqlalchemy.sql.expression import func
 from models import User, Setting, Category, Tag, Recipe, Ingredient
 from forms import LoginForm
 
+
 @app.route('/')
 def home():
     recipes = Recipe.query.order_by(func.random()).limit(4).all()
 
     return render_template('home.html', recipes=recipes)
 
+
 @app.route('/scheduler')
 @login_required
 def scheduler():
     return render_template('scheduler.html')
+
 
 @app.route('/recipes')
 @login_required
@@ -23,6 +26,7 @@ def recipes():
     recipes = Recipe.query.order_by('id', Recipe.id.asc()).all()
 
     return render_template('recipes.html', recipes=recipes)
+
 
 @app.route('/recipes/search')
 @login_required
@@ -37,27 +41,31 @@ def search():
 
     return jsonify(result)
 
+
 @app.route('/recipes/<int:id>/<title>')
 @login_required
 def recipe(id, title=None):
     return render_template('recipe.html')
+
 
 @app.route('/groceries')
 @login_required
 def groceries():
     return render_template('groceries.html')
 
+
 @app.route('/pantry')
 @login_required
 def pantry():
     return render_template('pantry.html')
 
+
 @app.route('/settings')
 @login_required
-def settings(): 
-    user     = User.query.first()
+def settings():
+    user = User.query.first()
 
-    count    = {
+    count = {
       'recipes': Recipe.query.count(),
       'ingredients': Ingredient.query.count(),
       'tags': Tag.query.count(),
@@ -66,11 +74,12 @@ def settings():
 
     # Query all settings and create a dict with the setting's name as key
     settings = Setting.query.all()
-    settings = dict([ (s.name, s) for s in settings ])
+    settings = dict([(s.name, s) for s in settings])
 
     settings['available_languages'] = app.config['LANGUAGES']
 
     return render_template('settings.html', user=user, count=count, settings=settings)
+
 
 @app.route('/settings/ingredients')
 @login_required
@@ -79,12 +88,14 @@ def ingredients():
 
     return render_template('ingredients.html', ingredients=ingredients)
 
+
 @app.route('/settings/tags')
 @login_required
 def tags():
     tags = Tag.query.all()
 
     return render_template('tags.html', tags=tags)
+
 
 @app.route('/settings/categories')
 @login_required
@@ -93,7 +104,8 @@ def categories():
 
     return render_template('categories.html', categories=categories)
 
-@app.route('/login', methods=['GET','POST'])
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -110,11 +122,13 @@ def login():
 
     return render_template('login.html', form=form)
 
+
 @app.route('/logout')
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
 
 @app.route('/generator', methods=['GET', 'POST'])
 def generator():
