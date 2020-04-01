@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% from 'macros.html' import recipe_card with context %}
 {% set title = _('Recipes') %}
 {% set active_page = 'recipes' %}
 
@@ -61,22 +62,8 @@
 	</div>
 
   {% for recipe in recipes %}
-    {% set url = url_for('recipe', id=recipe.id, title=recipe.name|slugify ) %}
-    {% set tag = recipe.category.name %}
     <div class="four wide column">
-      <div class="ui card">
-        <a class="image" href="{{ url }}">
-          <img src="/static/food/example-{{ recipe.id }}.jpg">
-        </a>
-        <div class="content">
-          <a class="header" href="{{ url }}" style="margin-top: 1rem;">{{ recipe.name }}</a>
-        </div>
-        <div class="extra content meta">
-          <a href="{{ url_for('recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
-          <a href="{{ url_for('recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
-          <a href="{{ url_for('recipes', tag=tag.lower() ) }}" class="ui tag label right floated">{{ tag }}</a>
-        </div>
-      </div>
+      {{ recipe_card(recipe) }}
     </div>
   {% endfor %}
 </div>
