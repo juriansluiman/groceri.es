@@ -3,36 +3,79 @@
 {% set active_page = 'recipes' %}
 
 {% block content %}
-<!-- <h1>Fish curry</h1> -->
+{% set url = url_for('recipe', id=recipe.id, title=recipe.name|slugify) %}
 
 <div class="ui grid">
   <div class="six wide column cards">
-    <div class="ui fluid card">
-      <a class="image" href="{{ url_for('recipe', id=1, title='fish-curry') }}">
+    <div class="ui card">
+      <a class="image" href="{{ url }}">
         <img src="/static/food/example-1.jpg">
       </a>
       <div class="content">
-        <a class="header" href="{{ url_for('recipe', id=1, title='fish-curry') }}">Fish curry</a>
+        <a class="ui teal right ribbon label" href="{{ url_for('recipes', category=recipe.category.name|slugify) }}">{{ recipe.category.name }}</a>
+        <a class="header" href="{{ url }}" style="margin-top: -1rem; font-size: 2rem;">{{ recipe.name }}</a>
+        <a href="/edit" style="position: absolute; right: 0px; bottom: 0px; color: black;"><i class="pen icon"></i></a>
       </div>
 
       <div class="extra content meta">
-        <a href="" class="ui tag label right floated">Indian</a>
-        <a><i class="stopwatch icon"></i> 20min</a>
-        <i class="utensils icon"></i> serves 4
+        <a href="{{ url_for('recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
+        <a href="{{ url_for('recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
+        <i class="utensils icon"></i> serves {{ recipe.servings }}
+        <div class="ui yellow rating" data-icon="star" data-rating="2" data-max-rating="5" style="margin-left: 1rem;"></div>
       </div>
+
+      {% if recipe.tags %}
+      <div class="extra content">
+        {% for tag in recipe.tags %}
+          <a href="{{ url_for('recipes', tag=tag.name|slugify) }}" class="ui tag label floated" style="margin-right: 1rem;">{{ tag.name }}</a>
+        {% endfor %}
+      </div>
+      {% endif %}
     </div>
   </div>
 
   <div class="ten wide column">
     <div class="ui fluid card">
       <div class="content">
-        <p class="header">Hier nog tekst</p>
+        <p class="header">{{ recipe.intro }}</p>
       </div>
 
       <div class="extra content">
-        <p>Hier nog wat meer tekst</p>
+        <p>{{ recipe.description }}</p>
       </div>
+    </div>
+
+    <div class="ui fluid card">
+      <div class="content">
+        <p class="header">{{ _('Ingredient listing') }}</p>
+      </div>
+
+      <table class="ui table">
+        <thead>
+          <tr>
+            <th>Ingredient</th>
+            <th class="one wide right aligned">Amount</th>
+            <th class="one wide">Unit</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for ingredient in recipe.ingredients %}
+            <tr>
+              <td>{{ ingredient.ingredient.name }}</td>
+              <td class="right aligned">{{ ingredient.amount }}</td>
+              <td>{{ ingredient.ingredient.unit }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
+
+<script>
+$(document).ready(function(){
+    $('.ui.rating').rating();
+});
+</script>
 {% endblock %}

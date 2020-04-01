@@ -3,6 +3,7 @@ from flask import request, jsonify, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
+from slugify import slugify
 from models import User, Setting, Category, Tag, Recipe, Ingredient, RecipeIngredient
 from forms import LoginForm
 
@@ -42,10 +43,17 @@ def search():
     return jsonify(result)
 
 
+@app.route('/recipes/<int:id>')
 @app.route('/recipes/<int:id>/<title>')
 @login_required
 def recipe(id, title=None):
-    return render_template('recipe.html')
+    recipe = Recipe.query.get_or_404(id)
+    slug = slugify(recipe.name)
+
+    if slug != title:
+        return redirect(url_for('recipe', id=recipe.id, title=slug))
+
+    return render_template('recipe.html', recipe=recipe)
 
 
 @app.route('/groceries')
