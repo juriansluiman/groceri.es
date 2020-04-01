@@ -3,7 +3,7 @@ from flask import request, jsonify, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
-from models import User, Setting, Category, Tag, Recipe, Ingredient
+from models import User, Setting, Category, Tag, Recipe, Ingredient, RecipeIngredient
 from forms import LoginForm
 
 
@@ -138,6 +138,8 @@ def generator():
     Category.query.delete()
     Tag.query.delete()
     Recipe.query.delete()
+    Ingredient.query.delete()
+    RecipeIngredient.query.delete()
 
     jurian = User(name='jurian', email='jurian@slui.mn', password=generate_password_hash('password'))
 
@@ -157,10 +159,27 @@ def generator():
     indian     = Tag('Indian')
     italian    = Tag('Italian')
     moroccan   = Tag('Moroccan')
+    lactose    = Tag('Lactose free')
 
-    recipe1 = Recipe(name='Fish curry', servings=4, prep_time=15, cook_time=30, category=main,
-        intro='A delicious but simple curry',
-        description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")
+
+    recipe1 = Recipe(
+        name='Fish curry', servings=4, prep_time=15, cook_time=30,
+        category=main, intro='A delicious but simple curry',
+        description="""Wash and cook the rice.\n\nStart with oil and fry the
+            paste for 5 minutes. Add the fish and coconut milk. Poach fish until
+            tender. Finalize with coriander.""")
+
+    rice = Ingredient('Rice', 'g')
+    paste = Ingredient('Curry paste', 'ts')
+    fish = Ingredient('White fish', 'g')
+    coconut = Ingredient('Coconut milk', 'ml')
+    coriander = Ingredient('Coriander', 'g')
+
+    recipe1.ingredients.append(RecipeIngredient(rice, 320))
+    recipe1.ingredients.append(RecipeIngredient(paste, 3, 0.75))
+    recipe1.ingredients.append(RecipeIngredient(fish, 400))
+    recipe1.ingredients.append(RecipeIngredient(coconut, 150))
+    recipe1.ingredients.append(RecipeIngredient(coriander, 20))
 
     recipe1.tags.append(indian)
     recipe1.tags.append(lactose)

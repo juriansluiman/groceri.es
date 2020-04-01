@@ -71,6 +71,10 @@ class Ingredient(db.Model):
 
     # shopping_category = db.Column()
 
+    def __init__(self, name, unit):
+        self.name = name
+        self.unit = unit
+
 
 class RecipeIngredient(db.Model):
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'), primary_key=True)
@@ -79,6 +83,14 @@ class RecipeIngredient(db.Model):
     scaling = db.Column(db.Float, default=1)
 
     recipe = db.relationship("Recipe", back_populates='ingredients')
+    ingredient = db.relationship("Ingredient")
+
+    def __init__(self, ingredient, amount, scaling=None):
+        self.ingredient = ingredient
+        self.amount = amount
+
+        if scaling is not None:
+            self.scaling = scaling
 
 
 class Meal(db.Model):
