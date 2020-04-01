@@ -3,16 +3,22 @@
 
 {% block content %}
 <h1>{{ _('Login') }}</h1>
-<form action="" method="post" novalidate class="ui form">
+<form action="" method="post" novalidate class="ui form{% if form.errors%} error{% endif %}">
     {{ form.hidden_tag() }}
     <div class="field">
         {{ form.username.label }}
         {{ form.username(size=32) }}
     </div>
+    {% for error in form.username.errors %}
+        <div class="ui error message"><p>{{ error }}</p></div>
+    {% endfor %}
     <div class="field">
         {{ form.password.label }}
         {{ form.password(size=32) }}
     </div>
+    {% for error in form.password.errors %}
+        <div class="ui error message"><p>{{ error }}</p></div>
+    {% endfor %}
     <div class="field"><div class="ui toggle checkbox">
         {{ form.remember_me() }} {{ form.remember_me.label }}
     </div></div>
