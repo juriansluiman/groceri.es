@@ -26,11 +26,19 @@
     }
     .sidebar {
       flex: 0 0 auto;
-      width: 260px;
+      width: 270px;
     }
-    @media only screen and (max-width: 720px) {
+    @media (min-width: 600px) {
+      .bottombar {
+        display: none;
+      }
+    }
+    @media only screen and (max-width: 600px) {
       .sidebar {
         display: none;
+      }
+      .bottombar {
+        display: block;
       }
     }
   </style>
@@ -43,8 +51,32 @@
     </a>
     {% for href, id, caption in navigation_bar %}
       <a href="{{ href }}" class="{% if id == active_page %}active{% endif %} item"><b>{{ caption }}</b></a>
-      {% endfor %}
+    {% endfor %}
   </nav></div>
+
+  <div class="bottombar"><nav class="ui five item bottom fixed inverted labeled icon menu">
+    <a class="item" href="/">
+      <i class="leaf icon{% if active_page == 'home' %} active{% endif %}"></i>
+      Home
+    </a>
+    <a class="item" href="/recipes">
+      <i class="file alternate icon{% if active_page == 'recipes' %} active{% endif %}"></i>
+      Recipes
+    </a>
+    <a class="item" href="/groceries">
+      <i class="shopping basket icon{% if active_page == 'groceries' %} active{% endif %}"></i>
+      Groceries
+    </a>
+    <a class="item" href="/pantry">
+      <i class="store icon{% if active_page == 'pantry' %} active{% endif %}"></i>
+      Pantry
+    </a>
+    <a class="item" href="/settings">
+      <i class="tools icon{% if active_page == 'settings' %} active{% endif %}"></i>
+      Settings
+    </a>
+  </nav></div>
+
   <main class="ui container" style="padding-top: 1rem;">
     {% block content %}{% endblock %}
     <div class="ui divider"></div>
