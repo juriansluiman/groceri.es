@@ -1,8 +1,10 @@
 from app import app, db
-from flask import request, jsonify, render_template, redirect, url_for
+from flask import request, jsonify, render_template, redirect, url_for, flash
+from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
 from models import User, Setting, Category, Tag, Recipe, Ingredient
+from forms import LoginForm
 
 @app.route('/')
 def home():
@@ -11,16 +13,19 @@ def home():
     return render_template('home.html', recipes=recipes)
 
 @app.route('/scheduler')
+@login_required
 def scheduler():
     return render_template('scheduler.html')
 
 @app.route('/recipes')
+@login_required
 def recipes():
     recipes = Recipe.query.order_by('id', Recipe.id.asc()).all()
 
     return render_template('recipes.html', recipes=recipes)
 
 @app.route('/recipes/search')
+@login_required
 def search():
     query = request.args.get('q')
 
@@ -33,18 +38,22 @@ def search():
     return jsonify(result)
 
 @app.route('/recipes/<int:id>/<title>')
+@login_required
 def recipe(id, title=None):
     return render_template('recipe.html')
 
 @app.route('/groceries')
+@login_required
 def groceries():
     return render_template('groceries.html')
 
 @app.route('/pantry')
+@login_required
 def pantry():
     return render_template('pantry.html')
 
 @app.route('/settings')
+@login_required
 def settings(): 
     user     = User.query.first()
 
@@ -64,18 +73,21 @@ def settings():
     return render_template('settings.html', user=user, count=count, settings=settings)
 
 @app.route('/settings/ingredients')
+@login_required
 def ingredients():
     ingredients = Ingredient.query.all()
 
     return render_template('ingredients.html', ingredients=ingredients)
 
 @app.route('/settings/tags')
+@login_required
 def tags():
     tags = Tag.query.all()
 
     return render_template('tags.html', tags=tags)
 
 @app.route('/settings/categories')
+@login_required
 def categories():
     categories = Category.query.all()
 
@@ -83,8 +95,26 @@ def categories():
 
 @app.route('/login', methods=['GET','POST'])
 def login():
-    pass
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
 
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(name=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password')
+            return redirect(url_for('login'))
+
+        login_user(user, remember=form.remember_me.data)
+        return redirect(url_for('home'))
+
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 @app.route('/generator', methods=['GET', 'POST'])
 def generator():
@@ -95,7 +125,7 @@ def generator():
     Tag.query.delete()
     Recipe.query.delete()
 
-    jurian = User(name='Jurian', email='jurian@slui.mn', password=generate_password_hash('password'))
+    jurian = User(name='jurian', email='jurian@slui.mn', password=generate_password_hash('password'))
 
     grocery_day             = Setting('grocery_day', 'sat')
     default_servings        = Setting('default_servings', '2')

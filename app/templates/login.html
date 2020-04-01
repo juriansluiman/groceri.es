@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% set title = _('Login') %}
+
+{% block content %}
+<h1>{{ _('Login') }}</h1>
+<form action="" method="post" novalidate class="ui form">
+    {{ form.hidden_tag() }}
+    <div class="field">
+        {{ form.username.label }}
+        {{ form.username(size=32) }}
+    </div>
+    <div class="field">
+        {{ form.password.label }}
+        {{ form.password(size=32) }}
+    </div>
+    <div class="field"><div class="ui toggle checkbox">
+        {{ form.remember_me() }} {{ form.remember_me.label }}
+    </div></div>
+
+    <div class="field">{{ form.submit(class="ui button") }}</div>
+</form>
+
+<script>
+$(document).ready(function(){
+    $('.ui.checkbox').checkbox();
+});
+</script>
+{% endblock %}

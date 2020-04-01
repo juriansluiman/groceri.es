@@ -13,18 +13,18 @@ app.config.from_object(Config())
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True, render_as_batch=True)
 
-login_manager = LoginManager()
-login_manager.init_app(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
 
 babel = Babel(app)
 
-from models import User, Setting
-
+from models import User
 @login_manager.user_loader
 def load_user(user_id):
     """Load user with specified user ID."""
-    return User(id=user_id)
+    return User.query.get(int(user_id))
 
+from models import Setting
 @babel.localeselector
 def get_locale():
     """Get the selected locale from user settings."""
@@ -46,4 +46,5 @@ def language_name(value):
     """Jinja2 filter to get language object from language code."""
     return pycountry.languages.get(alpha_2=value)
 
-import views, models, cli
+"""Import all web routes and CLI routes to run this app"""
+import views, cli

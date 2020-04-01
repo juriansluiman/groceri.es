@@ -92,5 +92,24 @@
     </footer>
   </main>
 
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <script>
+    $(document).ready(function(){
+      {% for category, message in messages %}
+        $('body').toast({
+          message: '{{ message }}',
+          class: '{{ category }}',
+          closeIcon: true,
+          showProgress: 'top',
+          progressUp: true,
+          classProgress: 'green'
+         });
+      {% endfor %}
+    });
+    </script>
+    {% endif %}
+  {% endwith %}
+
 </body>
 </html>

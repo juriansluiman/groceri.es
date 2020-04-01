@@ -33,6 +33,8 @@
 
 <div class="ui divider"></div>
 
+{% if not current_user.is_anonymous %}
+
 <h1><i class="calendar icon"></i>{{ _("Meal planning") }}</h1>
 <table class="ui selectable very basic table">
     <tr>
@@ -131,4 +133,20 @@
 $(document).ready(function(){
     $('.notes').popup();
 </script>
+{% else %}
+<div class="ui icon warning message">
+  <i class="exclamation triangle icon"></i>
+  <div class="content">
+    <div class="header">{{ _("Login required!") }}</div>
+
+    <p>{{ _('This application requires you to login. Only this homepage is accessible without login.') }}</p>
+    {% autoescape false %}
+      <p>{{ _('Please click %(link)shere%(closelink)s to login.', link='<a href="/login">', closelink='</a>') }}</p>
+    {% endautoescape %}
+  </div>
+</div>
+
+{% endif %}
+
+
 {% endblock %}
