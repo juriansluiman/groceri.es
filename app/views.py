@@ -162,6 +162,9 @@ def generator():
         intro='A delicious but simple curry',
         description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")
 
+    recipe1.tags.append(indian)
+    recipe1.tags.append(lactose)
+
     recipe2 = Recipe(name='Pasta something', servings=4, prep_time=20, cook_time=15, category=main,
         intro='Quick pasta for a working day meal',
         description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")

@@ -2,6 +2,12 @@ from app import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+recipe_tag = db.Table(
+    'recipe_tag',
+    db.Column('recipe_id', db.Integer, db.ForeignKey('recipe.id'), primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tag.id'), primary_key=True)
+)
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -45,10 +51,12 @@ class Recipe(db.Model):
 
     ingredients = db.relationship('RecipeIngredient', back_populates='recipe')
 
+    tags = db.relationship('Tag', secondary=recipe_tag, back_populates='recipes')
+
 
 class Category(db.Model):
-    id      = db.Column(db.Integer, primary_key=True)
-    name    = db.Column(db.String(128), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128), nullable=False)
 
     recipes = db.relationship('Recipe', back_populates='category')
 
@@ -93,6 +101,8 @@ class Grocery(db.Model):
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), nullable=False)
+
+    recipes = db.relationship('Recipe', secondary=recipe_tag, back_populates='tags')
 
     def __init__(self, name):
         self.name = name
