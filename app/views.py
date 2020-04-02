@@ -4,15 +4,28 @@ from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
 from slugify import slugify
-from models import User, Setting, Category, Tag, Recipe, Ingredient, RecipeIngredient
 from forms import LoginForm
+from models import User, Setting, Category, Tag, Recipe, Ingredient, \
+    RecipeIngredient, Meal
+from datetime import date, timedelta
 
 
 @app.route('/')
 def home():
     recipes = Recipe.query.order_by(func.random()).limit(4).all()
+    meals = Meal.query.filter(Meal.day >= date.today()).order_by(Meal.day).all()
 
-    return render_template('home.html', recipes=recipes)
+    days = dict()
+    for meal in meals:
+        day = str(meal.day)
+
+        # Create new dict key if the key doesn't exist
+        if day not in days:
+            days[day] = []
+
+        days[day].append(meal)
+
+    return render_template('home.html', recipes=recipes, days=days)
 
 
 @app.route('/scheduler')
@@ -89,7 +102,8 @@ def settings():
 
     settings['available_languages'] = app.config['LANGUAGES']
 
-    return render_template('settings.html', user=user, count=count, settings=settings)
+    return render_template('settings.html',
+                           user=user, count=count, settings=settings)
 
 
 @app.route('/settings/ingredients')
@@ -151,6 +165,7 @@ def generator():
     Recipe.query.delete()
     Ingredient.query.delete()
     RecipeIngredient.query.delete()
+    Meal.query.delete()
 
     jurian = User(name='jurian', email='jurian@slui.mn', password=generate_password_hash('password'))
 
@@ -172,7 +187,6 @@ def generator():
     moroccan   = Tag('Moroccan')
     lactose    = Tag('Lactose free')
 
-
     recipe1 = Recipe(
         name='Fish curry', servings=4, prep_time=15, cook_time=30,
         category=main, intro='A delicious but simple curry',
@@ -191,9 +205,6 @@ def generator():
     recipe1.ingredients.append(RecipeIngredient(fish, 400))
     recipe1.ingredients.append(RecipeIngredient(coconut, 150))
     recipe1.ingredients.append(RecipeIngredient(coriander, 20))
-
-    recipe1.tags.append(indian)
-    recipe1.tags.append(lactose)
 
     recipe2 = Recipe(name='Pasta something', servings=4, prep_time=20, cook_time=15, category=main,
         intro='Quick pasta for a working day meal',
@@ -231,11 +242,11 @@ def generator():
         intro='A delicious but simple curry',
         description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")
 
-    recipe11 = Recipe(name='Pasta something', servings=4, prep_time=20, cook_time=15, category=main,
-        intro='Quick pasta for a working day meal',
-        description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")
+    recipe11 = Recipe(name='Zaalouk', servings=4, prep_time=15, cook_time=0, category=side_dish,
+        intro='Moroccan Vegetable side dish',
+        description="Cut the eggplants to cubes, if you like you can peel the eggplant not completely you leave some skin on them for the dark look.\n\nCut the tomato to fine slices")
 
-    recipe12 = Recipe(name='Weekend tajine', servings=4, prep_time=30, cook_time=60, category=main,
+    recipe12 = Recipe(name='A very long title with multiple words', servings=4, prep_time=30, cook_time=60, category=main,
         intro='Something truly the waiting for during a weekend',
         description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")
 
@@ -255,6 +266,7 @@ def generator():
     session.add(indian)
     session.add(italian)
     session.add(moroccan)
+    session.add(lactose)
     session.add(recipe1)
     session.add(recipe2)
     session.add(recipe3)
@@ -267,6 +279,36 @@ def generator():
     session.add(recipe10)
     session.add(recipe11)
     session.add(recipe12)
+
+    session.commit()
+
+    recipe1.tags.append(indian)
+    recipe1.tags.append(lactose)
+
+    recipe11.tags.append(moroccan)
+
+    session.commit()
+
+    today = Meal(date.today(), recipe1)
+    tomorrow = Meal(date.today() + timedelta(days=1), recipe2)
+    tomorrow1 = Meal(date.today() + timedelta(days=1), name='Green salad', note='Use rocket salad from yesterday')
+    tomorrow2 = Meal(date.today() + timedelta(days=2),
+                     name='Rösti with lamb and red cabbage',
+                     note='Rösti from freezer, check lamb first!')
+    tomorrow3 = Meal(date.today() + timedelta(days=3), recipe3, servings=4)
+    tomorrow4 = Meal(date.today() + timedelta(days=4), name='Chicken biryani')
+    tomorrow5 = Meal(date.today() + timedelta(days=5), recipe9)
+    tomorrow6 = Meal(date.today() + timedelta(days=5), recipe11)
+
+    session.add(today)
+    session.add(tomorrow)
+    session.add(tomorrow1)
+    session.add(tomorrow2)
+    session.add(tomorrow3)
+    session.add(tomorrow4)
+    session.add(tomorrow5)
+    session.add(tomorrow6)
+
     session.commit()
 
     return redirect(url_for('home'))

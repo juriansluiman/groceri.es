@@ -1,15 +1,11 @@
 {% extends 'layout.html' %}
 {% from 'macros.html' import recipe_card with context %}
+{% from 'macros.html' import recipe_url with context %}
 {% set active_page = 'home' %}
 
 {% block content %}
-<style>
-  @media only screen and (max-width: 720px) {
-    .extra.content.meta a {display:block;}
-    a.ui.tag.label {display: none;}
-  }
-</style>
-<h1><i class="lightbulb icon"></i>{{ _("Today's inspiration") }}</h1>
+{% if recipes %}
+<h1>{{ _("Today's inspiration") }}</h1>
 <div class="ui grid">
   {% for recipe in recipes %}
     <div class="four wide column">
@@ -19,64 +15,51 @@
 </div>
 
 <div class="ui divider"></div>
+{% endif %}
+
 
 {% if not current_user.is_anonymous %}
 
 <h1><i class="calendar icon"></i>{{ _("Meal planning") }}</h1>
 <table class="ui selectable very basic table">
+  {% for meals in days.values() %}
+    {% set single = meals|length==1 %}
+    {% set meal = meals[0] %}
     <tr>
       <td class="center aligned one wide">
-        <a href=""><img class="ui mini avatar image" src="/static/food/example-1.jpg"></a>
+        {% if meal.recipe %}<a href="{{ recipe_url(meal.recipe) }}" style="display: block; height: 100%;">{% endif %}
+        <img class="ui mini avatar image" src="{% if meal.recipe %}/static/food/example-{{ meal.recipe.id }}.jpg{% endif %}">
+        {% if meal.recipe %}</a>{% endif %}{# Closing <a> for <td> block #}
       </td>
       <td>
-        <strong>Moday March 23</strong><br>
-        <i class="file alternate icon"></i>Fusili green pesto
+        {% if single and meal.recipe %}<a href="{{ recipe_url(meal.recipe) }}" style="display: block; color: black; height: 100%;">{% endif %}
+        <strong style="display: block;">{{ meal.day | date('EEEE d MMMM') | capitalize }}</strong>
+        {% for meal in meals %}
+          {% if meal.recipe %}
+            {% if not single %}<a href="{{ recipe_url(meal.recipe) }}" style="display: block; color: black;">{% endif %}
+            <i class="file alternate icon"></i>{{ meal.recipe.name }}
+            {% if not single %}</a>{% endif %}
+          {% endif %}
+          {% if meal.name %}
+            <div{% if meal.note %} class="notes" data-title="{{ _('Notes') }}" data-content="{{ meal.note }}"{% endif %}>
+              {% if meal.note %}<i class="sticky note icon"></i>{% endif %}
+              {{- meal.name }}
+            </div>
+          {% endif %}
+        {% endfor %}
+        {% if single and meal.recipe %}</a>{% endif %}{# Closing <a> for <td> block #}
       </td>
-      <td class="one wide"><i class="stopwatch icon"></i>20min</td>
-    </tr>
-    <tr>
-      <td class="center aligned">
-        <img class="ui mini avatar image" src="/static/food/example-2.jpg">
+      <td class="two wide">
+        {% if meal.servings %}<i class="users icon"></i>serves {{ meal.servings }}{% endif %}
       </td>
-      <td>
-        <strong>Tuesday March 24</strong><br>
-        <i class="file alternate icon"></i>Lemon risotto<br>
-      </td>
-      <td><i class="stopwatch icon"></i>45min</td>
-    </tr>
-    <tr>
-      <td class="center aligned">
-        <img class="ui avatar image" src="">
-      </td>
-      <td>
-        <strong>Wednesday March 25</strong><br>
-        Chicken biryani (left over)
-      </td>
-      <td></td>
-    </tr>
-    <tr>
-      <td class="center aligned">
-        <img class="ui mini avatar image" src="/static/food/example-3.jpg">
-      </td>
-      <td>
-        <strong>Thursday March 26</strong><br>
-        <i class="file alternate icon"></i>Gnocchi with radicchio and taleggio
-      </td>
-      <td>
-        <i class="stopwatch icon"></i>30min<br>
-        <i class="users icon"></i>serves 4
+      <td class="one wide">
+        {% for meal in meals %}
+          {% if meal.recipe %}<i class="stopwatch icon"></i>{{ meal.recipe.prep_time }}min{% endif %}
+          {% if loop.nextitem is defined %}<br>{% endif %}
+        {% endfor %}
       </td>
     </tr>
-    <tr>
-      <td class="center aligned">
-        <img class="ui avatar image" src="">
-      </td>
-      <td class="notes" data-title="Notities" data-content="Rosti rondjes uit de vriezer, schenkel proberen of deze goed is anders BBQ worstjes, groente uit diepvries">
-        <strong>Friday March 27</strong><br>
-        <i class="sticky note icon"></i>Rösti with lamb and red cabbage
-      </td>
-      <td><i class="stopwatch icon"></i>25min</td>
-    </tr>
+  {% endfor %}
     <tr>
       <td></td>
       <td>
@@ -89,6 +72,7 @@
           <div class="results"></div>
         </div>
       </td>
+      <td></td>
       <td>
         <a class="ui labeled icon button" href="{{ url_for('recipes', schedule='24-3-2020') }}">
           <i class="binoculars icon"></i>
@@ -96,6 +80,7 @@
         </a>
       </td>
     </tr>
+
     <tr>
       <td></td>
       <td>
@@ -113,12 +98,14 @@
         </a>
       </td>
       <td></td>
+      <td></td>
     </tr>
 </table>
 
 <script>
 $(document).ready(function(){
     $('.notes').popup();
+});
 </script>
 {% else %}
 <div class="ui icon warning message">
@@ -132,8 +119,6 @@ $(document).ready(function(){
     {% endautoescape %}
   </div>
 </div>
-
 {% endif %}
-
 
 {% endblock %}
