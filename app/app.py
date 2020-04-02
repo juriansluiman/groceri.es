@@ -2,7 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from flask_babel import Babel
+from flask_babel import Babel, format_date
 from config import Config
 from slugify import slugify
 import pycountry
@@ -48,6 +48,14 @@ def slug(value):
 def language_name(value):
     """Jinja2 filter to get language object from language code."""
     return pycountry.languages.get(alpha_2=value)
+
+
+@app.template_filter('date')
+def format_datetime(value, format="short"):
+    """Format a date time to (Default): d Mon YYYY HH:MM P"""
+    if value is None:
+        return ""
+    return format_date(value, format)
 
 
 """Import all web routes and CLI routes to run this app"""
