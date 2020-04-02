@@ -24,9 +24,12 @@ def scheduler():
 @app.route('/recipes')
 @login_required
 def recipes():
-    recipes = Recipe.query.order_by('id', Recipe.id.asc()).all()
+    recipes = Recipe.query.order_by(func.random()).all()
+    categories = Category.query.all()
+    tags = Tag.query.all()
 
-    return render_template('recipes.html', recipes=recipes)
+    return render_template('recipes.html',
+                           recipes=recipes, categories=categories, tags=tags)
 
 
 @app.route('/recipes/search')

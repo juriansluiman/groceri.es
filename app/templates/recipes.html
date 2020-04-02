@@ -7,29 +7,26 @@
 <h1>{{ _('Your recipes') }}</h1>
 
 <div class="ui stackable grid">
-	<div class="sixteen wide column">
-	  <div class="ui styled fluid accordion">
-	  	<div class="title"><i class="filter icon"></i>{{ _('Filter your recipes') }}</div>
-        <!-- 
-            Split this box. Make it smaller and put the query outside. Also flag for favorite / date picker
-         -->
-		<form class="ui form content">
-			<div class="field">
-			    <label>{{ _('Query') }}</label>
-			    <div class="ui icon input">
-			    	<input type="text" placeholder="Search for recipe or ingredient"><i class="search link icon"></i>
-			    </div>
-			</div>
+	<div class="eight wide column">
+        <form class="ui form">
+            <div class="ui fluid icon input">
+                <input type="text" placeholder="Search for recipe or ingredient"><i class="search link icon"></i>
+            </div>
+        </form>
+    </div>
 
+    <div class="five wide column">
+	  <div class="ui styled fluid accordion">
+	  	<div class="title"><i class="filter icon"></i>{{ _('Filter') }}</div>
+        
+		<form class="ui form content">
 		  	<div class="field">
 			    <label>{{ _('Category') }}</label>
 			    <select multiple="" class="ui dropdown courses">
 			      <option value="">{{ _('Select category') }}</option>
-			      <option value="amuse">Amuse</option>
-			      <option value="starter">Starter</option>
-			      <option selected value="main">Main</option>
-			      <option value="side-dish">Side dish</option>
-			      <option value="desert">Desert</option>
+			      {% for category in categories %}
+                    <option value="{{ category.name }}">{{ category.name }}</option>
+                  {% endfor %}
 			    </select>
   			</div>
 
@@ -37,16 +34,14 @@
 			    <label>{{ _('Tag') }}</label>
 			    <select multiple="" class="ui search dropdown">
 			      <option value="">{{ _('Select tag') }}</option>
-			      <option value="italian">Italian</option>
-			      <option value="vegetarian">Vegetarian</option>
-			      <option value="moroccan">Moroccan</option>
-			      <option value="vegan">Vegan</option>
-			      <option value="simple">Simple</option>
+			      {% for tag in tags %}
+                    <option value="{{ tag.name }}">{{ tag.name }}</option>
+                  {% endfor %}
 			    </select>
   			</div>
 
   			<div class="field">
-			    <label>{{ _('Duration') }}</label>
+			    <label>{{ _('Prep time') }}</label>
 			    <select multiple="" class="ui dropdown">
 			      <option value="">{{ _('Select duration') }}</option>
 			      <option value="0-15">0-15 minutes</option>
@@ -56,16 +51,32 @@
 			      <option value="120+">120+ minutes</option>
 			    </select>
   			</div>
+
+        <div class="field">
+          <label>{{ _('Cook time') }}</label>
+          <select multiple="" class="ui dropdown">
+            <option value="">{{ _('Select duration') }}</option>
+            <option value="0-15">0-15 minutes</option>
+            <option value="15-30">15-30 minutes</option>
+            <option value="30-60">30-60 minutes</option>
+            <option value="60-120">60-120 minutes</option>
+            <option value="120+">120+ minutes</option>
+          </select>
+        </div>
   			<button class="ui button">{{ _('Filter recipes') }}</button>
 		</form>
 	  </div>
 	</div>
 
-  {% for recipe in recipes %}
+  <div class="three wide right aligned column">
+      <button class="ui button"><i class="file alternate icon"></i>Add recipe</button>
+  </div>
+
+    {% for recipe in recipes %}
     <div class="four wide column">
       {{ recipe_card(recipe) }}
     </div>
-  {% endfor %}
+    {% endfor %}
 </div>
 
 <div class="ui pagination menu" style="margin-top: 1rem;">
