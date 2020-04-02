@@ -48,13 +48,17 @@ def recipes():
 @app.route('/recipes/search')
 @login_required
 def search():
-    query = request.args.get('q')
+    q = request.args.get('q')
+    recipes = Recipe.query.filter(Recipe.name.ilike('%{}%'.format(q))).all()
 
-    result = {'results': [
-        {'title':'Naan delicious', 'description':'Some delicious tajine with naan', 'image':'/static/food/example-1.jpg', 'url':'/recipes/1/naan'},
-        {'title':'Pasta something', 'description':'A pasta with a smooth sauce', 'image':'/static/food/example-2.jpg', 'url':'/recipes/2/pasta'},
-        {'title':'Fish curry', 'description':'Simple comfort food', 'image':'/static/food/example-3.jpg', 'url':'/recipes/3/curry'}
-    ]}
+    result = {'results': []}
+    for recipe in recipes:
+        result['results'].append({
+            'title': recipe.name,
+            'description': recipe.intro,
+            'image': '/static/food/example-{}.jpg'.format(recipe.id),
+            'link': '/recipes/{}/{}'.format(recipe.id, slugify(recipe.name))
+        })
 
     return jsonify(result)
 

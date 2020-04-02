@@ -64,12 +64,11 @@
       <td></td>
       <td>
         <strong>Saturday March 28</strong>
-        <div class="ui search" style="display: inline-block;  width:80%;margin-left:1rem;">
+        <div class="ui search quicksearch" style="display: inline-block; width:80%; margin-left:1rem;">
           <div class="ui icon fluid input small">
-            <input type="text" placeholder="{{ _('Quick search for a recipe...') }}">
+            <input type="text" class="prompt" placeholder="{{ _('Quick search for a recipe...') }}">
             <i class="search icon"></i>
           </div>
-          <div class="results"></div>
         </div>
       </td>
       <td></td>
@@ -105,6 +104,16 @@
 <script>
 $(document).ready(function(){
     $('.notes').popup();
+    $('.quicksearch').search({
+      apiSettings: {
+        url: '/recipes/search?q={query}'
+      },
+      minCharacters : 3,
+      onSelect: function(result, response) {
+        console.log(result);
+        $('.quicksearch').search('hide results');
+      }
+    });
 });
 </script>
 {% else %}
