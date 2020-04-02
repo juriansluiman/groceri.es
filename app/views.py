@@ -52,7 +52,7 @@ def search():
             'title': recipe.name,
             'description': recipe.intro,
             'image': '/static/food/example-{}.jpg'.format(recipe.id),
-            'link': '/recipes/{}/{}'.format(recipe.id, slugify(recipe.name))
+            'link': url_for('recipe', id=recipe.id, title=slugify(recipe.name))
         })
 
     return jsonify(result)
