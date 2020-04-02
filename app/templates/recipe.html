@@ -1,19 +1,18 @@
 {% extends 'layout.html' %}
+{% from 'macros.html' import recipe_url with context %}
 {% set title = 'Recipes' %}
 {% set active_page = 'recipes' %}
 
 {% block content %}
-{% set url = url_for('recipe', id=recipe.id, title=recipe.name|slugify) %}
-
 <div class="ui grid">
   <div class="six wide column cards">
-    <div class="ui card">
-      <a class="image" href="{{ url }}">
-        <img src="/static/food/example-1.jpg">
+    <div class="ui fluid card">
+      <a class="image" href="{{ recipe_url(recipe) }}">
+        <img src="/static/food/example-{{ recipe.id }}.jpg">
       </a>
       <div class="content">
         <a class="ui teal right ribbon label" href="{{ url_for('recipes', category=recipe.category.name|slugify) }}">{{ recipe.category.name }}</a>
-        <a class="header" href="{{ url }}" style="margin-top: -1rem; font-size: 2rem;">{{ recipe.name }}</a>
+        <a class="header" href="{{ recipe_url(recipe) }}" style="margin-top: -1rem; font-size: 2rem; padding-right: 3rem;">{{ recipe.name }}</a>
         <a href="/edit" style="position: absolute; right: 0px; bottom: 0px; color: black;"><i class="pen icon"></i></a>
       </div>
 
