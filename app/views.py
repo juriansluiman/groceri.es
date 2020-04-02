@@ -8,6 +8,7 @@ from forms import LoginForm
 from models import User, Setting, Category, Tag, Recipe, Ingredient, \
     RecipeIngredient, Meal
 from datetime import date, timedelta
+from collections import defaultdict
 
 
 @app.route('/')
@@ -15,15 +16,9 @@ def home():
     recipes = Recipe.query.order_by(func.random()).limit(4).all()
     meals = Meal.query.filter(Meal.day >= date.today()).order_by(Meal.day).all()
 
-    days = dict()
+    days = defaultdict(list)
     for meal in meals:
-        day = str(meal.day)
-
-        # Create new dict key if the key doesn't exist
-        if day not in days:
-            days[day] = []
-
-        days[day].append(meal)
+        days[str(meal.day)].append(meal)
 
     return render_template('home.html', recipes=recipes, days=days)
 
