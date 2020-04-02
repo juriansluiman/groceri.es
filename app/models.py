@@ -98,9 +98,22 @@ class Meal(db.Model):
     day = db.Column(db.DateTime, nullable=False)
     name = db.Column(db.String(128), nullable=True)
     note = db.Column(db.Text, nullable=True)
+    servings = db.Column(db.Integer, nullable=True)
 
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
     recipe = db.relationship('Recipe')
+
+    def __init__(self, day, recipe=None, name=None, note=None, servings=None):
+        self.day = day
+
+        if recipe is not None:
+            self.recipe = recipe
+        if name is not None:
+            self.name = name
+        if note is not None:
+            self.note = note
+        if servings is not None:
+            self.servings = servings
 
 
 class Grocery(db.Model):
