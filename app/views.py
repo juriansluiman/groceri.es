@@ -52,21 +52,21 @@ def search():
             'title': recipe.name,
             'description': recipe.intro,
             'image': '/static/food/example-{}.jpg'.format(recipe.id),
-            'link': url_for('recipe', id=recipe.id, title=slugify(recipe.name))
+            'link': url_for('recipe', id=recipe.id, name=slugify(recipe.name))
         })
 
     return jsonify(result)
 
 
 @app.route('/recipes/<int:id>')
-@app.route('/recipes/<int:id>/<title>')
+@app.route('/recipes/<int:id>/<name>')
 @login_required
-def recipe(id, title=None):
+def recipe(id, name=None):
     recipe = Recipe.query.get_or_404(id)
     slug = slugify(recipe.name)
 
-    if slug != title:
-        return redirect(url_for('recipe', id=recipe.id, title=slug))
+    if slug != name:
+        return redirect(url_for('recipe', id=recipe.id, name=slug))
 
     return render_template('recipe.html', recipe=recipe)
 
