@@ -9,17 +9,19 @@
 <div class="ui stackable grid">
 	<div class="eight wide column">
         <form class="ui form">
-            <div class="ui fluid icon input">
-                <input type="text" placeholder="Search for recipe or ingredient"><i class="search link icon"></i>
+            <div class="ui fluid right action left icon input">
+              <i class="search link icon"></i>
+              <input type="text" placeholder="Search for recipe or ingredient">
+              <button class="ui button">{{ _('Search') }}</button>
             </div>
         </form>
     </div>
 
     <div class="five wide column">
-	  <div class="ui styled fluid accordion">
+	  <div class="ui styled fluid accordion" style="line-height: 1rem;">
 	  	<div class="title"><i class="filter icon"></i>{{ _('Filter') }}</div>
         
-		<form class="ui form content">
+		  <form class="ui form content">
 		  	<div class="field">
 			    <label>{{ _('Category') }}</label>
 			    <select multiple="" class="ui dropdown courses">
@@ -69,7 +71,10 @@
 	</div>
 
   <div class="three wide right aligned column">
-      <button class="ui button"><i class="file alternate icon"></i>Add recipe</button>
+      <div class="ui calendar" style="display: inline;" data-date="2020-04-07">
+        <button class="ui blue button"><i class="calendar alternate outline icon" style="margin-right: 0;"></i></button>
+      </div>
+      <button class="ui button"><i class="file alternate icon"></i>New</button>
   </div>
 
     {% for recipe in recipes %}
@@ -93,7 +98,7 @@
 $(document).ready(function(){
     $('.dropdown').dropdown();
     $('.accordion').accordion();
-    $('.calendar').calendar({type: 'date', minDate: new Date(), selectAdjacentDays: true});
+    $('.ui.calendar').calendar({type: 'date', minDate: new Date(), selectAdjacentDays: true});
 });
 </script>
 {% endblock %}
