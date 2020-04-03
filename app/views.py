@@ -14,7 +14,8 @@ from collections import defaultdict
 @app.route('/')
 def home():
     recipes = Recipe.query.order_by(func.random()).limit(4).all()
-    meals = Meal.query.filter(Meal.day >= date.today()).order_by(Meal.day).all()
+    meals = Meal.query.filter(Meal.day >= date.today()) \
+                      .order_by(Meal.day).all()
 
     days = defaultdict(list)
     for meal in meals:
