@@ -7,98 +7,119 @@
 <h1>{{ _('Your recipes') }}</h1>
 
 <div class="ui stackable grid">
-	<div class="eight wide column">
-        <form class="ui form">
-            <div class="ui fluid right action left icon input">
-              <i class="search link icon"></i>
-              <input type="text" placeholder="Search for recipe or ingredient">
-              <button class="ui button">{{ _('Search') }}</button>
-            </div>
-        </form>
+  <form class="row ui form" method="get" action="{{ url_for('recipes') }}">
+    <div class="eight wide column">
+      <div class="ui fluid right action left icon input">
+        <i class="search link icon"></i>
+        <input type="text" name="query" placeholder="Search for recipe or ingredient"{% if filter.query %} value="{{ filter.query }}"{% endif %}>
+        <button class="ui button" type="submit">{{ _('Search') }}</button>
+      </div>
     </div>
 
     <div class="five wide column">
-	  <div class="ui styled fluid accordion" style="line-height: 1rem;">
-	  	<div class="title"><i class="filter icon"></i>{{ _('Filter') }}</div>
-        
-		  <form class="ui form content">
-		  	<div class="field">
-			    <label>{{ _('Category') }}</label>
-			    <select multiple="" class="ui dropdown courses">
-			      <option value="">{{ _('Select category') }}</option>
-			      {% for category in categories %}
-                    <option value="{{ category.name }}">{{ category.name }}</option>
-                  {% endfor %}
-			    </select>
-  			</div>
-
-  			<div class="field">
-			    <label>{{ _('Tag') }}</label>
-			    <select multiple="" class="ui search dropdown">
-			      <option value="">{{ _('Select tag') }}</option>
-			      {% for tag in tags %}
-                    <option value="{{ tag.name }}">{{ tag.name }}</option>
-                  {% endfor %}
-			    </select>
-  			</div>
-
-  			<div class="field">
-			    <label>{{ _('Prep time') }}</label>
-			    <select multiple="" class="ui dropdown">
-			      <option value="">{{ _('Select duration') }}</option>
-			      <option value="0-15">0-15 minutes</option>
-			      <option value="15-30">15-30 minutes</option>
-			      <option value="30-60">30-60 minutes</option>
-			      <option value="60-120">60-120 minutes</option>
-			      <option value="120+">120+ minutes</option>
-			    </select>
-  			</div>
-
-        <div class="field">
-          <label>{{ _('Cook time') }}</label>
-          <select multiple="" class="ui dropdown">
-            <option value="">{{ _('Select duration') }}</option>
-            <option value="0-15">0-15 minutes</option>
-            <option value="15-30">15-30 minutes</option>
-            <option value="30-60">30-60 minutes</option>
-            <option value="60-120">60-120 minutes</option>
-            <option value="120+">120+ minutes</option>
-          </select>
+      <div class="ui styled fluid accordion" style="line-height: 1rem;">
+        <div class="title">
+          <i class="filter icon"></i>
+          {{ _('Filter') }}
+          {% if filter.categories or filter.tags %} (active){% endif %}
         </div>
-  			<button class="ui button">{{ _('Filter recipes') }}</button>
-		</form>
-	  </div>
-	</div>
 
-  <div class="three wide right aligned column">
-      <div class="ui calendar" style="display: inline;" data-date="2020-04-07">
-        <button class="ui blue button"><i class="calendar alternate outline icon" style="margin-right: 0;"></i></button>
+        <div class="content">
+          <div class="field">
+            <label>{{ _('Category') }}</label>
+            <select multiple="" class="ui dropdown courses" name="category">
+              <option value="">{{ _('Select category') }}</option>
+              {% for category in categories %}
+                <option value="{{ category.name }}"{% if category.name in filter.categories %} selected{% endif %}>
+                  {{ category.name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>{{ _('Tag') }}</label>
+            <select multiple="" class="ui search dropdown" name="tag">
+              <option value="">{{ _('Select tag') }}</option>
+              {% for tag in tags %}
+                <option value="{{ tag.name }}"{% if tag.name in filter.tags %} selected{% endif %}>
+                  {{ tag.name }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="field">
+            <label>{{ _('Prep time') }}</label>
+            <select multiple="" class="ui dropdown" name="prep_time">
+              <option value="">{{ _('Select duration') }}</option>
+              <option value="0-15">0-15 minutes</option>
+              <option value="15-30">15-30 minutes</option>
+              <option value="30-60">30-60 minutes</option>
+              <option value="60-120">60-120 minutes</option>
+              <option value="120+">120+ minutes</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>{{ _('Cook time') }}</label>
+            <select multiple="" class="ui dropdown" name="cook_time">
+              <option value="">{{ _('Select duration') }}</option>
+              <option value="0-15">0-15 minutes</option>
+              <option value="15-30">15-30 minutes</option>
+              <option value="30-60">30-60 minutes</option>
+              <option value="60-120">60-120 minutes</option>
+              <option value="120+">120+ minutes</option>
+            </select>
+          </div>
+
+          <button type="submit" class="ui button">{{ _('Filter recipes') }}</button>
+        </div>
       </div>
-      <button class="ui button"><i class="file alternate icon"></i>New</button>
-  </div>
-
-    {% for recipe in recipes %}
-    <div class="four wide column">
-      {{ recipe_card(recipe) }}
     </div>
-    {% endfor %}
-</div>
 
-<div class="ui pagination menu" style="margin-top: 1rem;">
-  <a class="active item">1</a>
-  <a class="item">2</a>
-  <a class="item">3</a>
-  <div class="disabled item">...</div>
-  <a class="item">6</a>
-  <a class="item">7</a>
-  <a class="item">8</a>
+    <div class="three wide right aligned column" style="padding: 0;">
+      {% if filter.query or filter.categories or filter.tags %}
+        <button class="ui button reset" type="reset" data-tooltip="Clear query and filter criteria">
+          <i class="ban icon" style="margin-right: 0; margin-left: 0;"></i>
+        </button>
+      {% endif %}
+      {% if day %}
+      <input type="hidden" name="day" value="{{ day }}">
+      <div class="ui calendar" style="display: inline;" data-date="{{ day }}">
+        <button class="ui blue button" type="button" data-tooltip="Select recipe for {{ day|date('EEEE d MMMM') }}"><i class="calendar alternate outline icon" style="margin-right: 0; margin-left: 0;"></i></button>
+      </div>
+      {% endif %}
+      <a class="ui button" data-tooltip="Add a new recipe" href="{{ url_for('new_recipe') }}">
+        <i class="plus icon" style="margin-right: 0; margin-left: 0;"></i>
+      </a>
+    </div>
+  </form>
+
+  {% for recipe in recipes %}
+  <div class="four wide column">
+    {{ recipe_card(recipe) }}
+  </div>
+  {% endfor %}
 </div>
 
 <script>
 $(document).ready(function(){
     $('.dropdown').dropdown();
     $('.accordion').accordion();
+    $('.popup').popup();
     $('.ui.calendar').calendar({type: 'date', minDate: new Date(), selectAdjacentDays: true});
+    $('form').submit(function(e){
+      var emptyinputs = $(this).find('input').filter(function(){
+        return !$.trim(this.value).length;  // get all empty fields
+      }).prop('disabled',true);   
+    })
+    $('.reset').click(function(e) {
+      console.log(e)
+      $('input[type=text]').val('');
+      $('select option').removeAttr('selected')
+      $('form').trigger('submit');
+    })
 });
 </script>
 {% endblock %}

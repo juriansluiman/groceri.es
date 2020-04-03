@@ -32,12 +32,33 @@ def scheduler():
 @app.route('/recipes')
 @login_required
 def recipes():
-    recipes = Recipe.query.order_by(func.random()).all()
+
+    filter = dict()
+    filter['query'] = request.args.get('query')
+    filter['categories'] = request.args.getlist('category')
+    filter['tags'] = request.args.getlist('tag')
+
+    day = request.args.get('day')
+
+    query = Recipe.query.order_by(func.random())
+    if filter['query']:
+        query = query.filter(Recipe.name.ilike('%{}%'.format(filter['query'])))
+    if filter['categories']:
+        query = query.filter(Recipe.category.has(
+                    Category.name.in_(filter['categories'])
+                ))
+    if filter['tags']:
+        query = query.filter(Recipe.tags.any(
+                    Tag.name.in_(filter['tags'])
+                ))
+
+    recipes = query.all()
     categories = Category.query.all()
     tags = Tag.query.all()
 
     return render_template('recipes.html',
-                           recipes=recipes, categories=categories, tags=tags)
+                           recipes=recipes, categories=categories, tags=tags,
+                           filter=filter, day=day)
 
 
 @app.route('/recipes/search')
