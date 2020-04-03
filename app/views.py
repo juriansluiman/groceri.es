@@ -33,7 +33,6 @@ def scheduler():
 @app.route('/recipes')
 @login_required
 def recipes():
-
     filter = dict()
     filter['query'] = request.args.get('query')
     filter['categories'] = request.args.getlist('category')
@@ -65,17 +64,19 @@ def recipes():
 @app.route('/recipes/search')
 @login_required
 def search():
-    q = request.args.get('q')
-    recipes = Recipe.query.filter(Recipe.name.ilike('%{}%'.format(q))).all()
-
+    query = request.args.get('q')
     result = {'results': []}
-    for recipe in recipes:
-        result['results'].append({
-            'title': recipe.name,
-            'description': recipe.intro,
-            'image': '/static/food/example-{}.jpg'.format(recipe.id),
-            'link': url_for('recipe', id=recipe.id, name=slugify(recipe.name))
-        })
+
+    if query:
+        clauses = [Recipe.name.ilike('%{}%'.format(k)) for k in query.split()]
+        recipes = Recipe.query.filter(*clauses).all()
+        for recipe in recipes:
+            result['results'].append({
+                'title': recipe.name,
+                'description': recipe.intro,
+                'image': '/static/food/example-{}.jpg'.format(recipe.id),
+                'link': url_for('recipe', id=recipe.id, name=slugify(recipe.name))
+            })
 
     return jsonify(result)
 
