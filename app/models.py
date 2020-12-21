@@ -46,7 +46,7 @@ class Recipe(db.Model):
     description = db.Column(db.Text, nullable=False)
     rating = db.Column(db.Integer)
 
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=True)
     category = db.relationship('Category', back_populates='recipes')
 
     ingredients = db.relationship('RecipeIngredient', back_populates='recipe')
