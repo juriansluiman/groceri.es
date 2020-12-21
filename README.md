@@ -192,6 +192,13 @@ FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db SEC
 
 You can then reach the development server at http://127.0.0.1:10020
 
+If you need to create database migrations you can do so with:
+
+```
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask db migrate
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask db upgrade
+```
+
 ### Database and persistency
 By default Flask uses SQLAlchemy with a database URI `sqlite:///db/app.db`. This
 creates as SQLite database in the `/app/db/` folder of the image. Please be aware
