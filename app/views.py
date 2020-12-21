@@ -13,6 +13,12 @@ from datetime import date, timedelta
 from collections import defaultdict
 
 LOGGER = logging.getLogger(__name__)
+SETTING_DEFAULTS = {
+    "allow_user_registration" :  True,
+    "default_servings"        :  2,
+    "default_language"        :  "en-us",
+    "grocery_day"             :  "sat",
+}
 
 @app.route('/')
 def home():
@@ -126,6 +132,8 @@ def settings():
     settings = dict([(s.name, s) for s in settings])
 
     settings['available_languages'] = app.config['LANGUAGES']
+    for k, v in SETTING_DEFAULTS.items():
+        settings[k] = settings.get(k, v)
 
     return render_template('settings.html',
                            user=user, count=count, settings=settings)
