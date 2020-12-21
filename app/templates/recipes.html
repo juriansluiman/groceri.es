@@ -90,7 +90,7 @@
         <button class="ui blue button" type="button" data-tooltip="Select recipe for {{ day|date('EEEE d MMMM') }}"><i class="calendar alternate outline icon" style="margin-right: 0; margin-left: 0;"></i></button>
       </div>
       {% endif %}
-      <a class="ui button" data-tooltip="Add a new recipe" href="{{ url_for('new_recipe') }}">
+      <a class="ui button" data-tooltip="Add a new recipe" href="{{ url_for('recipe_new') }}">
         <i class="plus icon" style="margin-right: 0; margin-left: 0;"></i>
       </a>
     </div>

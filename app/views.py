@@ -6,7 +6,7 @@ from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
 from slugify import slugify
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RecipeForm, RegisterForm
 from models import User, Setting, Category, Tag, Recipe, Ingredient, \
     RecipeIngredient, Meal
 from datetime import date, timedelta
@@ -68,6 +68,34 @@ def recipes():
     return render_template('recipes.html',
                            recipes=recipes, categories=categories, tags=tags,
                            filter=filter, day=day)
+
+@app.route('/recipes/new', methods=["GET", "POST"])
+@login_required
+def recipe_new():
+    """Create a new recipe."""
+    form = RecipeForm()
+    LOGGER.debug("New recipe form.")
+    if form.validate_on_submit():
+        LOGGER.debug("Validating new recipe form.")
+        recipe = Recipe(
+            cook_time = form.cook_time.data,
+            description = form.description.data,
+            name = form.name.data,
+            prep_time = form.prep_time.data,
+            servings = form.servings.data,
+            intro = form.intro.data,
+        )
+        session = db.session
+        session.add(recipe)
+        session.commit()
+        LOGGER.info("Created recipe %s", form.name.data)
+        return redirect(url_for('recipe', id=recipe.id))
+    else:
+        for error in form.errors:
+            LOGGER.debug("Error: %s", error)
+
+
+    return render_template('recipe_new.html', form=form)
 
 
 @app.route('/recipes/search')
