@@ -1,15 +1,18 @@
+import logging
+
 from app import app, db
 from flask import request, jsonify, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
 from slugify import slugify
-from forms import LoginForm
+from forms import LoginForm, RegisterForm
 from models import User, Setting, Category, Tag, Recipe, Ingredient, \
     RecipeIngredient, Meal
 from datetime import date, timedelta
 from collections import defaultdict
 
+LOGGER = logging.getLogger(__name__)
 
 @app.route('/')
 def home():
@@ -167,7 +170,38 @@ def login():
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('home'))
 
-    return render_template('login.html', form=form)
+
+    return render_template('login.html', form=form, register_link=url_for("register"))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(name=form.username.data).first()
+        if user:
+            LOGGER.info("Username '%s' already taken.", form.username.data)
+            flash('Username already taken, please choose another')
+            return redirect(url_for('register'))
+
+        user = User(
+            email=form.email.data,
+            name=form.username.data,
+            password=generate_password_hash(form.password.data))
+
+        session = db.session
+        session.add(user)
+        session.commit()
+        LOGGER.info("Created user %s", form.username.data)
+
+        login_user(user, remember=False)
+        return redirect(url_for('home'))
+
+
+    return render_template('register.html', form=form)
 
 
 @app.route('/logout')
