@@ -162,6 +162,36 @@ production!
      -e FLASK_APP=app.py -e FLASK_DEBUG=1 -e SECRET_KEY='my-secret-here' groceri.es \
      flask run --host=0.0.0.0 --port=80
 
+### Run outside the container
+
+Alternatively you can run development mode outside of a container. This can
+be useful to speed development when you need to frequently restart the
+server. To do so you'll need to set up a Python virtual environment with the
+prerequisites:
+
+```
+python3 -m venv ve
+source ve/bin/activate
+pip install -r app/requirements.txt
+```
+
+After that you'll need to manually create a database file and run the migrations:
+
+```
+cd app/
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask current
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask upgrade
+```
+
+This will create a database file at `/tmp/test.db`. After that you can start
+the app and tell it to use the database file:
+
+```
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db SECRET_KEY=something-secret flask run --host=127.0.0.1 --port=10020
+```
+
+You can then reach the development server at http://127.0.0.1:10020
+
 ### Database and persistency
 By default Flask uses SQLAlchemy with a database URI `sqlite:///db/app.db`. This
 creates as SQLite database in the `/app/db/` folder of the image. Please be aware
