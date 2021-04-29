@@ -126,10 +126,10 @@ automatically migrate your database to the version from the container.
 The docker image is meant to be ephemeral, which means the container can be
 stopped and thrown away without losing data. The user generated content is
 stored in a database, which can be a SQLite database in a docker volume, or a 
-(SQL based) database in a linked docker container seperate from this application.
+(SQL based) database in a linked docker container separate from this application.
 
 Furthermore it is advised to create a volume container for your image uploads, so
-these images are kept seperately from the application container as well.
+these images are kept separately from the application container as well.
 
 ### Build the image from source code
 The image will be available on Docker Hub later, but you can already create the
@@ -186,7 +186,9 @@ FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db fla
 This will create a database file at `/tmp/test.db`. After that you can start
 the app and tell it to use the database file:
 
-```
+```t pandemic I haven't had the time to push things through and current state is pretty useless to be honest.
+
+If you load the fixture data (go to http://my-ip-here/generator) and then login with username "jurian", password "password" you can continue browsing menu scheme and recipe listings, but it's still view-only. Afaik you can't add recipes or plan meals on a schedule, that's all on the todo.
 FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db SECRET_KEY=something-secret flask run --host=127.0.0.1 --port=10020
 ```
 
@@ -256,3 +258,10 @@ required for CSRF protection and to keep users logged into the application.
 There are security measures by Docker using `docker secret` to keep variables
 secret in a Docker environment. However at this moment docker secrets are not
 supported in groceri.es. 
+
+### Post-install tip
+
+After you run the docker image and manage to connect with a browser you need to do a one time step to
+load the fixture data (go to http://_<my-ip-here>_/generator) and then
+login with username "jurian", password "password" you can continue browsing menu scheme and
+recipe listings, but it's still view-only.
