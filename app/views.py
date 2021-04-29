@@ -1,15 +1,24 @@
+import logging
+
 from app import app, db
 from flask import request, jsonify, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
 from sqlalchemy.sql.expression import func
 from slugify import slugify
-from forms import LoginForm
+from forms import LoginForm, RecipeForm, RegisterForm
 from models import User, Setting, Category, Tag, Recipe, Ingredient, \
     RecipeIngredient, Meal
 from datetime import date, timedelta
 from collections import defaultdict
 
+LOGGER = logging.getLogger(__name__)
+SETTING_DEFAULTS = {
+    "allow_user_registration" :  True,
+    "default_servings"        :  2,
+    "default_language"        :  "en-us",
+    "grocery_day"             :  "sat",
+}
 
 @app.route('/')
 def home():
@@ -59,6 +68,34 @@ def recipes():
     return render_template('recipes.html',
                            recipes=recipes, categories=categories, tags=tags,
                            filter=filter, day=day)
+
+@app.route('/recipes/new', methods=["GET", "POST"])
+@login_required
+def recipe_new():
+    """Create a new recipe."""
+    form = RecipeForm()
+    LOGGER.debug("New recipe form.")
+    if form.validate_on_submit():
+        LOGGER.debug("Validating new recipe form.")
+        recipe = Recipe(
+            cook_time = form.cook_time.data,
+            description = form.description.data,
+            name = form.name.data,
+            prep_time = form.prep_time.data,
+            servings = form.servings.data,
+            intro = form.intro.data,
+        )
+        session = db.session
+        session.add(recipe)
+        session.commit()
+        LOGGER.info("Created recipe %s", form.name.data)
+        return redirect(url_for('recipe', id=recipe.id))
+    else:
+        for error in form.errors:
+            LOGGER.debug("Error: %s", error)
+
+
+    return render_template('recipe_new.html', form=form)
 
 
 @app.route('/recipes/search')
@@ -123,6 +160,8 @@ def settings():
     settings = dict([(s.name, s) for s in settings])
 
     settings['available_languages'] = app.config['LANGUAGES']
+    for k, v in SETTING_DEFAULTS.items():
+        settings[k] = settings.get(k, v)
 
     return render_template('settings.html',
                            user=user, count=count, settings=settings)
@@ -167,7 +206,38 @@ def login():
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('home'))
 
-    return render_template('login.html', form=form)
+
+    return render_template('login.html', form=form, register_link=url_for("register"))
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+
+    form = RegisterForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(name=form.username.data).first()
+        if user:
+            LOGGER.info("Username '%s' already taken.", form.username.data)
+            flash('Username already taken, please choose another')
+            return redirect(url_for('register'))
+
+        user = User(
+            email=form.email.data,
+            name=form.username.data,
+            password=generate_password_hash(form.password.data))
+
+        session = db.session
+        session.add(user)
+        session.commit()
+        LOGGER.info("Created user %s", form.username.data)
+
+        login_user(user, remember=False)
+        return redirect(url_for('home'))
+
+
+    return render_template('register.html', form=form)
 
 
 @app.route('/logout')

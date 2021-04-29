@@ -162,6 +162,45 @@ production!
      -e FLASK_APP=app.py -e FLASK_DEBUG=1 -e SECRET_KEY='my-secret-here' groceri.es \
      flask run --host=0.0.0.0 --port=80
 
+### Run outside the container
+
+Alternatively you can run development mode outside of a container. This can
+be useful to speed development when you need to frequently restart the
+server. To do so you'll need to set up a Python virtual environment with the
+prerequisites:
+
+```
+python3 -m venv ve
+source ve/bin/activate
+pip install -r app/requirements.txt
+```
+
+After that you'll need to manually create a database file and run the migrations:
+
+```
+cd app/
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask current
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask upgrade
+```
+
+This will create a database file at `/tmp/test.db`. After that you can start
+the app and tell it to use the database file:
+
+```t pandemic I haven't had the time to push things through and current state is pretty useless to be honest.
+
+If you load the fixture data (go to http://my-ip-here/generator) and then login with username "jurian", password "password" you can continue browsing menu scheme and recipe listings, but it's still view-only. Afaik you can't add recipes or plan meals on a schedule, that's all on the todo.
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db SECRET_KEY=something-secret flask run --host=127.0.0.1 --port=10020
+```
+
+You can then reach the development server at http://127.0.0.1:10020
+
+If you need to create database migrations you can do so with:
+
+```
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask db migrate
+FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db flask db upgrade
+```
+
 ### Database and persistency
 By default Flask uses SQLAlchemy with a database URI `sqlite:///db/app.db`. This
 creates as SQLite database in the `/app/db/` folder of the image. Please be aware
@@ -219,7 +258,6 @@ required for CSRF protection and to keep users logged into the application.
 There are security measures by Docker using `docker secret` to keep variables
 secret in a Docker environment. However at this moment docker secrets are not
 supported in groceri.es. 
-
 
 ### Post-install tip
 

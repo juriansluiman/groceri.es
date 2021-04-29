@@ -1,10 +1,9 @@
 {% extends 'layout.html' %}
-{% set title = _('Login') %}
+{% set title = _('Register') %}
 
 {% block content %}
-<h1>{{ _('Login') }}</h1>
-<p>Need to <a href="{{ register_link }}">register</a> first?</p>
-<form action="" method="post" novalidate class="ui form{% if form.errors%} error{% endif %}">
+<h1>{{ _('Register') }}</h1>
+<form method="post" novalidate class="ui form{% if form.errors%} error{% endif %}">
     {{ form.hidden_tag() }}
     <div class="field">
         {{ form.username.label }}
@@ -14,15 +13,19 @@
         <div class="ui error message"><p>{{ error }}</p></div>
     {% endfor %}
     <div class="field">
+        {{ form.email.label }}
+        {{ form.email(size=128) }}
+    </div>
+    {% for error in form.email.errors %}
+        <div class="ui error message"><p>{{ error }}</p></div>
+    {% endfor %}
+    <div class="field">
         {{ form.password.label }}
         {{ form.password(size=32) }}
     </div>
     {% for error in form.password.errors %}
         <div class="ui error message"><p>{{ error }}</p></div>
     {% endfor %}
-    <div class="field"><div class="ui toggle checkbox">
-        {{ form.remember_me() }} {{ form.remember_me.label }}
-    </div></div>
 
     <div class="field">{{ form.submit(class="ui button") }}</div>
 </form>
