@@ -131,6 +131,17 @@ def recipe(id, name=None):
     return render_template('recipe.html', recipe=recipe)
 
 
+@app.route('/recipes/<int:id>', methods=['PATCH'])
+@login_required
+def recipe_update(id):
+    recipe = Recipe.query.get_or_404(id)
+
+    recipe.rating = request.json.get('rating')
+    db.session.commit()
+
+    return '', 204
+
+
 @app.route('/groceries')
 @login_required
 def groceries():
