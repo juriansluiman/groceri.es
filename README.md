@@ -186,9 +186,7 @@ FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db fla
 This will create a database file at `/tmp/test.db`. After that you can start
 the app and tell it to use the database file:
 
-```t pandemic I haven't had the time to push things through and current state is pretty useless to be honest.
-
-If you load the fixture data (go to http://my-ip-here/generator) and then login with username "jurian", password "password" you can continue browsing menu scheme and recipe listings, but it's still view-only. Afaik you can't add recipes or plan meals on a schedule, that's all on the todo.
+```
 FLASK_APP=app.py FLASK_DEBUG=1 SQLALCHEMY_DATABASE_URI=sqlite:///tmp/test.db SECRET_KEY=something-secret flask run --host=127.0.0.1 --port=10020
 ```
 
