@@ -1,4 +1,4 @@
-"""empty message
+"""Allow recipes with no category (null)
 
 Revision ID: 608c58b3ea93
 Revises: c28bc9056a38

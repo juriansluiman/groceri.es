@@ -1,4 +1,4 @@
-"""Add recipe/ingrediet relationship
+"""Add recipe/ingredient relationship
 
 Revision ID: 7c3b874cfc9f
 Revises: 076cdff9d927
