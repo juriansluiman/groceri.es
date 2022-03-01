@@ -124,7 +124,9 @@ $(document).ready(function(){
 
     <p>{{ _('This application requires you to login. Only this homepage is accessible without login.') }}</p>
     {% autoescape false %}
-      <p>{{ _('Please click %(link)shere%(closelink)s to login.', link='<a href="/login">', closelink='</a>') }}</p>
+      <p>
+        {{ _('Please %(link)slogin%(closelink)s to continue.', link='<a href="/login">', closelink='</a>') }}
+        {{ _('New here? You can also %(link)sregister%(closelink)s to start with groceri.es.', link='<a href="/register">', closelink='</a>') }}</p>
     {% endautoescape %}
   </div>
 </div>
