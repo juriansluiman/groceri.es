@@ -20,7 +20,7 @@
         <a href="{{ url_for('recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
         <a href="{{ url_for('recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
         <i class="utensils icon"></i> serves {{ recipe.servings }}
-        <div class="ui yellow rating" data-icon="star" data-rating="2" data-max-rating="5" style="margin-left: 1rem;"></div>
+        <div class="ui yellow rating" data-icon="star" data-rating="{{ recipe.rating }}" data-max-rating="5" style="margin-left: 1rem;"></div>
       </div>
 
       {% if recipe.tags %}
@@ -74,7 +74,16 @@
 
 <script>
 $(document).ready(function(){
-    $('.ui.rating').rating();
+    var rating = $('.ui.rating').rating({
+      onRate: function(value) {
+        $.ajax({
+          type: 'PATCH',
+          url: '{{ url_for('recipe_update', id=recipe.id) }}',
+          contentType: 'application/json',
+          data: JSON.stringify({rating: value})
+        })
+      }
+    });
 });
 </script>
 {% endblock %}
