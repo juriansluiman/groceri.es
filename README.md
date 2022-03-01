@@ -255,11 +255,4 @@ required for CSRF protection and to keep users logged into the application.
 
 There are security measures by Docker using `docker secret` to keep variables
 secret in a Docker environment. However at this moment docker secrets are not
-supported in groceri.es. 
-
-### Post-install tip
-
-After you run the docker image and manage to connect with a browser you need to do a one time step to
-load the fixture data (go to http://_<my-ip-here>_/generator) and then
-login with username "jurian", password "password" you can continue browsing menu scheme and
-recipe listings, but it's still view-only.
+supported in groceri.es.
