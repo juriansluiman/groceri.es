@@ -9,6 +9,7 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+
 class RecipeForm(FlaskForm):
     cook_time = IntegerField('Cook Time',
         validators=[DataRequired(), NumberRange(min=1, max=60*24*7)])
@@ -20,6 +21,7 @@ class RecipeForm(FlaskForm):
     servings = IntegerField('Servings',
         validators=[DataRequired(), NumberRange(min=1, max=10000)])
     submit = SubmitField('Create')
+
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
