@@ -217,7 +217,6 @@ def login():
         login_user(user, remember=form.remember_me.data)
         return redirect(url_for('home'))
 
-
     return render_template('login.html', form=form, register_link=url_for("register"))
 
 
@@ -270,12 +269,10 @@ def generator():
     RecipeIngredient.query.delete()
     Meal.query.delete()
 
-    jurian = User(name='jurian', email='jurian@slui.mn', password=generate_password_hash('password'))
-
     grocery_day             = Setting('grocery_day', 'sat')
     default_servings        = Setting('default_servings', '2')
     allow_user_registration = Setting('allow_user_registration', 'true')
-    default_language        = Setting('default_language', 'nl')
+    default_language        = Setting('default_language', 'en')
 
     starter   = Category('Starter')
     main      = Category('Main')
@@ -354,7 +351,6 @@ def generator():
         description="Start with bla bla and then\nDo some more steps\n\nEnjoy!")
 
     session = db.session
-    session.add(jurian)
     session.add(grocery_day)
     session.add(default_servings)
     session.add(allow_user_registration)
