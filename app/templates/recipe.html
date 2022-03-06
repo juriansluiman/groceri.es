@@ -72,18 +72,17 @@
   </div>
 </div>
 
-<script>
+<script type="module">
+import {Recipe} from '/static/scripts/index.js';
+
 $(document).ready(function(){
-    var rating = $('.ui.rating').rating({
-      onRate: function(value) {
-        $.ajax({
-          type: 'PATCH',
-          url: '{{ url_for('recipe_update', id=recipe.id) }}',
-          contentType: 'application/json',
-          data: JSON.stringify({rating: value})
-        })
-      }
-    });
+  $('.ui.rating').rating({
+    onRate: function(value) {
+      let uri = '{{ url_for('recipe_update', id=recipe.id) }}'
+      let recipe = new Recipe(uri)
+      recipe.rating = value
+    }
+  });
 });
 </script>
 {% endblock %}

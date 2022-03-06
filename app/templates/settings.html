@@ -8,7 +8,7 @@
   <div class="row">
     <div class="eight wide column ui">
         <h2>{{ _('Your profile') }}</h2>
-        <form class="ui form">
+        <form class="ui form" id="profile-form">
           <div class="field">
             <label>{{ _('Name') }}</label>
             <input type="text" name="name" placeholder="{{ _('Name') }}" value="{{ user.name }}">
@@ -84,7 +84,7 @@
     <div class="eight wide column ui">
         <h2>{{ _('Application settings') }}</h2>
 
-        <form class="ui form">
+        <form class="ui form" id="settings-form">
           <div class="field">
             <label>{{ _('Grocery day') }} ({{ settings.grocery_day.value }})</label>
             <select class="ui fluid dropdown">
@@ -174,5 +174,26 @@ $(document).ready(function(){
     $('.slider').slider({min:1, max:10, start: 2});
     $('.ui.checkbox').checkbox();
 });
+</script>
+
+<script type="module">
+import {Profile} from '/static/scripts/index.js';
+
+function profile() {
+  let form = document.getElementById('profile-form')
+  form.addEventListener('submit', function(event) {
+    let uri = '{{ url_for('profile') }}'
+    let profile = new Profile(uri)
+
+    profile.name = this.elements.name.value
+    profile.email = this.elements.email.value
+    profile.password = this.elements.password.value
+    // Now returns HTTP 500 due to server view not ready
+    profile.update()
+
+    event.preventDefault()
+  })
+}
+document.addEventListener('DOMContentLoaded', profile)
 </script>
 {% endblock %}
