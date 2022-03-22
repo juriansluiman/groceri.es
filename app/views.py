@@ -20,6 +20,7 @@ SETTING_DEFAULTS = {
     "grocery_day"             :  "sat",
 }
 
+
 @app.route('/')
 def home():
     recipes = Recipe.query.order_by(func.random()).limit(4).all()
@@ -157,7 +158,7 @@ def pantry():
 @app.route('/settings')
 @login_required
 def settings():
-    user = User.query.first()
+    user = current_user
 
     count = {
       'recipes': Recipe.query.count(),
