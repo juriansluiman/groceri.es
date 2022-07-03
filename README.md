@@ -152,7 +152,7 @@ This will spin up nginx inside the container and will serve the site at port 80
 on your host machine. If you want to use a different port, for example 1234, 
 change the port argument to `-p 1234:80`. More information about the `SECRET_KEY`
 parameter can be read at
-[the section about flask sessions](#markdown-header-flask-session-and-secret_key)
+[the section about flask sessions](#flask-session-and-secret_key)
 
 If you need to run Flask in development setup, you can use the below command to 
 run it with the built in webserver. Mind this is not meant to scale for
