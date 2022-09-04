@@ -73,7 +73,7 @@
       </td>
       <td></td>
       <td>
-        <a class="ui labeled icon button" href="{{ url_for('recipes', schedule='24-3-2020') }}">
+        <a class="ui labeled icon button" href="{{ url_for('main.recipes', schedule='24-3-2020') }}">
           <i class="binoculars icon"></i>
           {{ _("Search") }}
         </a>
@@ -91,7 +91,7 @@
           <i class="calendar plus outline icon"></i>
           {{ _("Add week") }}
         </button>
-        <a class="ui labeled icon button" href="{{ url_for('scheduler') }}">
+        <a class="ui labeled icon button" href="{{ url_for('main.scheduler') }}">
           <i class="calendar alternate outline icon"></i>
           {{ _("Scheduler") }}
         </a>

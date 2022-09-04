@@ -7,7 +7,7 @@
 <h1>{{ _('Your recipes') }}</h1>
 
 <div class="ui stackable grid">
-  <form class="row ui form" method="get" action="{{ url_for('recipes') }}">
+  <form class="row ui form" method="get" action="{{ url_for('main.recipes') }}">
     <div class="eight wide column">
       <div class="ui fluid right action left icon input">
         <i class="search link icon"></i>
@@ -90,7 +90,7 @@
         <button class="ui blue button" type="button" data-tooltip="Select recipe for {{ day|date('EEEE d MMMM') }}"><i class="calendar alternate outline icon" style="margin-right: 0; margin-left: 0;"></i></button>
       </div>
       {% endif %}
-      <a class="ui button" data-tooltip="Add a new recipe" href="{{ url_for('recipe_new') }}">
+      <a class="ui button" data-tooltip="Add a new recipe" href="{{ url_for('main.recipe_new') }}">
         <i class="plus icon" style="margin-right: 0; margin-left: 0;"></i>
       </a>
     </div>

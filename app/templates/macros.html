@@ -5,12 +5,12 @@
     <img src="/static/food/example-{{ recipe.id }}.jpg">
   </a>
   <div class="content">
-    <a class="ui teal right ribbon label" href="{{ url_for('recipes', category=recipe.category.name or 'none'|slugify) }}" style="position: relative; top: -0.5rem;">{{ recipe.category.name }}</a>
+    <a class="ui teal right ribbon label" href="{{ url_for('main.recipes', category=recipe.category.name or 'none'|slugify) }}" style="position: relative; top: -0.5rem;">{{ recipe.category.name }}</a>
     <a class="header" href="{{ url }}" style="margin-top: -2rem; margin-bottom: -0.5rem; padding-right: 3rem;">{{ recipe.name }}</a>
   </div>
   <div class="extra content meta">
-    <a href="{{ url_for('recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
-    <a href="{{ url_for('recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
+    <a href="{{ url_for('main.recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
+    <a href="{{ url_for('main.recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
   </div>
 </div>
 {% endmacro %}
