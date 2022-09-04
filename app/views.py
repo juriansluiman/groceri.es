@@ -1,6 +1,7 @@
 import logging
 
-from app import app, db
+from flask import Blueprint
+from models import db
 from flask import request, jsonify, render_template, redirect, url_for, flash
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash
@@ -11,6 +12,8 @@ from models import User, Setting, Category, Tag, Recipe, Ingredient, \
     RecipeIngredient, Meal
 from datetime import date, timedelta
 from collections import defaultdict
+from config import Config
+
 
 LOGGER = logging.getLogger(__name__)
 SETTING_DEFAULTS = {
@@ -20,8 +23,10 @@ SETTING_DEFAULTS = {
     "grocery_day"             :  "sat",
 }
 
+blueprint = Blueprint("main", __name__, static_folder="./static",template_folder='templates')
 
-@app.route('/')
+
+@blueprint.route('/')
 def home():
     recipes = Recipe.query.order_by(func.random()).limit(4).all()
     meals = Meal.query.filter(Meal.day >= date.today()) \
@@ -34,13 +39,13 @@ def home():
     return render_template('home.html', recipes=recipes, days=days)
 
 
-@app.route('/scheduler')
+@blueprint.route('/scheduler')
 @login_required
 def scheduler():
     return render_template('scheduler.html')
 
 
-@app.route('/recipes')
+@blueprint.route('/recipes')
 @login_required
 def recipes():
     filter = dict()
@@ -70,7 +75,7 @@ def recipes():
                            recipes=recipes, categories=categories, tags=tags,
                            filter=filter, day=day)
 
-@app.route('/recipes/new', methods=["GET", "POST"])
+@blueprint.route('/recipes/new', methods=["GET", "POST"])
 @login_required
 def recipe_new():
     """Create a new recipe."""
@@ -90,7 +95,7 @@ def recipe_new():
         session.add(recipe)
         session.commit()
         LOGGER.info("Created recipe %s", form.name.data)
-        return redirect(url_for('recipe', id=recipe.id))
+        return redirect(url_for('main.recipe', id=recipe.id))
     else:
         for error in form.errors:
             LOGGER.debug("Error: %s", error)
@@ -99,7 +104,7 @@ def recipe_new():
     return render_template('recipe_new.html', form=form)
 
 
-@app.route('/recipes/search')
+@blueprint.route('/recipes/search')
 @login_required
 def search():
     query = request.args.get('q')
@@ -113,26 +118,26 @@ def search():
                 'title': recipe.name,
                 'description': recipe.intro,
                 'image': '/static/food/example-{}.jpg'.format(recipe.id),
-                'link': url_for('recipe', id=recipe.id, name=slugify(recipe.name))
+                'link': url_for('main.recipe', id=recipe.id, name=slugify(recipe.name))
             })
 
     return jsonify(result)
 
 
-@app.route('/recipes/<int:id>')
-@app.route('/recipes/<int:id>/<name>')
+@blueprint.route('/recipes/<int:id>')
+@blueprint.route('/recipes/<int:id>/<name>')
 @login_required
 def recipe(id, name=None):
     recipe = Recipe.query.get_or_404(id)
     slug = slugify(recipe.name)
 
     if slug != name:
-        return redirect(url_for('recipe', id=recipe.id, name=slug))
+        return redirect(url_for('main.recipe', id=recipe.id, name=slug))
 
     return render_template('recipe.html', recipe=recipe)
 
 
-@app.route('/recipes/<int:id>', methods=['PATCH'])
+@blueprint.route('/recipes/<int:id>', methods=['PATCH'])
 @login_required
 def recipe_update(id):
     recipe = Recipe.query.get_or_404(id)
@@ -143,19 +148,19 @@ def recipe_update(id):
     return '', 204
 
 
-@app.route('/groceries')
+@blueprint.route('/groceries')
 @login_required
 def groceries():
     return render_template('groceries.html')
 
 
-@app.route('/pantry')
+@blueprint.route('/pantry')
 @login_required
 def pantry():
     return render_template('pantry.html')
 
 
-@app.route('/settings')
+@blueprint.route('/settings')
 @login_required
 def settings():
     user = current_user
@@ -171,7 +176,7 @@ def settings():
     settings = Setting.query.all()
     settings = dict([(s.name, s) for s in settings])
 
-    settings['available_languages'] = app.config['LANGUAGES']
+    settings['available_languages'] = Config.LANGUAGES
     for k, v in SETTING_DEFAULTS.items():
         settings[k] = settings.get(k, v)
 
@@ -179,7 +184,7 @@ def settings():
                            user=user, count=count, settings=settings)
 
 
-@app.route('/settings/ingredients')
+@blueprint.route('/settings/ingredients')
 @login_required
 def ingredients():
     ingredients = Ingredient.query.all()
@@ -187,7 +192,7 @@ def ingredients():
     return render_template('ingredients.html', ingredients=ingredients)
 
 
-@app.route('/settings/tags')
+@blueprint.route('/settings/tags')
 @login_required
 def tags():
     tags = Tag.query.all()
@@ -195,7 +200,7 @@ def tags():
     return render_template('tags.html', tags=tags)
 
 
-@app.route('/settings/categories')
+@blueprint.route('/settings/categories')
 @login_required
 def categories():
     categories = Category.query.all()
@@ -203,28 +208,28 @@ def categories():
     return render_template('categories.html', categories=categories)
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@blueprint.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(name=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash('Invalid username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('main.login'))
 
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
-    return render_template('login.html', form=form, register_link=url_for("register"))
+    return render_template('login.html', form=form, register_link=url_for("main.register"))
 
 
-@app.route('/register', methods=['GET', 'POST'])
+@blueprint.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
     form = RegisterForm()
     if form.validate_on_submit():
@@ -232,7 +237,7 @@ def register():
         if user:
             LOGGER.info("Username '%s' already taken.", form.username.data)
             flash('Username already taken, please choose another')
-            return redirect(url_for('register'))
+            return redirect(url_for('main.register'))
 
         user = User(
             email=form.email.data,
@@ -245,20 +250,20 @@ def register():
         LOGGER.info("Created user %s", form.username.data)
 
         login_user(user, remember=False)
-        return redirect(url_for('home'))
+        return redirect(url_for('main.home'))
 
 
     return render_template('register.html', form=form)
 
 
-@app.route('/logout')
+@blueprint.route('/logout')
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))
 
 
-@app.route('/generator', methods=['GET', 'POST'])
+@blueprint.route('/generator', methods=['GET', 'POST'])
 def generator():
     # Clear up database first
     User.query.delete()
@@ -411,4 +416,4 @@ def generator():
 
     session.commit()
 
-    return redirect(url_for('home'))
+    return redirect(url_for('main.home'))

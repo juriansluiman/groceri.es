@@ -22,7 +22,7 @@
             <input type="password" name="password" placeholder="{{ _('Password') }}" value="*************">
           </div>
           <button class="ui button" type="submit">{{ _('Save profile') }}</button>
-          <a class="ui button" href="{{ url_for('logout') }}">{{ _('Logout') }}</a>
+          <a class="ui button" href="{{ url_for('main.logout') }}">{{ _('Logout') }}</a>
         </form>
     </div>
 
@@ -32,7 +32,7 @@
         <div class="ui three column grid">
           <div class="row">
             <div class="centered column">
-              <a class="ui huge statistic" href="{{ url_for('recipes') }}">
+              <a class="ui huge statistic" href="{{ url_for('main.recipes') }}">
                 <div class="value">
                   {{ count.recipes }}
                 </div>
@@ -44,7 +44,7 @@
           </div>
 
             <div class="column">
-              <a class="ui statistic" href="{{ url_for('ingredients') }}">
+              <a class="ui statistic" href="{{ url_for('main.ingredients') }}">
                 <div class="value">
                   {{ count.ingredients }}
                 </div>
@@ -55,7 +55,7 @@
             </div>
 
             <div class="column">
-              <a class="ui statistic" href="{{ url_for('tags') }}">
+              <a class="ui statistic" href="{{ url_for('main.tags') }}">
                 <div class="value">
                   {{ count.tags }}
                 </div>
@@ -66,7 +66,7 @@
             </div>
 
             <div class="column">
-              <a class="ui statistic" href="{{ url_for('categories') }}">
+              <a class="ui statistic" href="{{ url_for('main.categories') }}">
                 <div class="value">
                   {{ count.categories }}
                 </div>
@@ -182,7 +182,8 @@ import {Profile} from '/static/scripts/index.js';
 function profile() {
   let form = document.getElementById('profile-form')
   form.addEventListener('submit', function(event) {
-    let uri = '{{ url_for('profile') }}'
+     // setting this to main.home for now instead of main.profile because it's causing problems
+    let uri = '{{ url_for('main.home') }}'
     let profile = new Profile(uri)
 
     profile.name = this.elements.name.value

@@ -11,14 +11,14 @@
         <img src="/static/food/example-{{ recipe.id }}.jpg">
       </a>
       <div class="content">
-        <a class="ui teal right ribbon label" href="{{ url_for('recipes', category=recipe.category.name) }}">{{ recipe.category.name }}</a>
+        <a class="ui teal right ribbon label" href="{{ url_for('main.recipes', category=recipe.category.name) }}">{{ recipe.category.name }}</a>
         <a class="header" href="{{ recipe_url(recipe) }}" style="margin-top: -1rem; font-size: 2rem; padding-right: 3rem;">{{ recipe.name }}</a>
         <a href="/edit" style="position: absolute; right: 0px; bottom: 0px; color: black;"><i class="pen icon"></i></a>
       </div>
 
       <div class="extra content meta">
-        <a href="{{ url_for('recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
-        <a href="{{ url_for('recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
+        <a href="{{ url_for('main.recipes', duration=recipe.prep_time ) }}"><i class="stopwatch icon"></i> {{ recipe.prep_time }}min</a>
+        <a href="{{ url_for('main.recipes', duration=recipe.cook_time ) }}"><i class="clock outline icon"></i> {{ recipe.cook_time }}min</a>
         <i class="utensils icon"></i> serves {{ recipe.servings }}
         <div class="ui yellow rating" data-icon="star" data-rating="{{ recipe.rating }}" data-max-rating="5" style="margin-left: 1rem;"></div>
       </div>
@@ -26,7 +26,7 @@
       {% if recipe.tags %}
       <div class="extra content">
         {% for tag in recipe.tags %}
-          <a href="{{ url_for('recipes', tag=tag.name|slugify) }}" class="ui tag label floated" style="margin-right: 1rem;">{{ tag.name }}</a>
+          <a href="{{ url_for('main.recipes', tag=tag.name|slugify) }}" class="ui tag label floated" style="margin-right: 1rem;">{{ tag.name }}</a>
         {% endfor %}
       </div>
       {% endif %}
@@ -78,7 +78,7 @@ import {Recipe} from '/static/scripts/index.js';
 $(document).ready(function(){
   $('.ui.rating').rating({
     onRate: function(value) {
-      let uri = '{{ url_for('recipe_update', id=recipe.id) }}'
+      let uri = '{{ url_for('main.recipe_update', id=recipe.id) }}'
       let recipe = new Recipe(uri)
       recipe.rating = value
     }

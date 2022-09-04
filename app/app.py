@@ -1,24 +1,27 @@
 import logging
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_babel import Babel, format_date
 from config import Config
 from slugify import slugify
+from models import db
+from cli import translate_blueprint
+from views import blueprint
 import pycountry
-
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config.from_object(Config())
 
-db = SQLAlchemy(app)
+db.init_app(app)
+app.register_blueprint(blueprint)
+app.register_blueprint(translate_blueprint)
 migrate = Migrate(app, db, compare_type=True, render_as_batch=True)
 
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'main.login'
 
 babel = Babel(app)
 
@@ -60,7 +63,3 @@ def format_datetime(value, format="short"):
     if value is None:
         return ""
     return format_date(value, format)
-
-
-"""Import all web routes and CLI routes to run this app"""
-import views, cli  # noqa
