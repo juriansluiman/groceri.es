@@ -10,7 +10,6 @@ from models import db
 from cli import translate_blueprint
 from views import blueprint
 import pycountry
-"""Import all web routes and CLI routes to run this app"""
 logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
