@@ -21,7 +21,7 @@ app.register_blueprint(translate_blueprint)
 migrate = Migrate(app, db, compare_type=True, render_as_batch=True)
 
 login_manager = LoginManager(app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'main.login'
 
 babel = Babel(app)
 

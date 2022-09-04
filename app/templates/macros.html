@@ -16,5 +16,5 @@
 {% endmacro %}
 
 {% macro recipe_url(recipe) %}
-{{ url_for('recipe', id=recipe.id, name=recipe.name|slugify) }}
+{{ url_for('main.recipe', id=recipe.id, name=recipe.name|slugify) }}
 {% endmacro %}
